@@ -1,5 +1,64 @@
 # Changelog
 
+## v2.1.0
+
+- **2026-07-31**: Point cloud sync at the new api.kaiterm.dev endpoint.
+
+- **2026-07-30** : Remove the deprecated alternate terminal transport, its settings, executable path, import handling, and launch code.
+
+- **2026-07-30**:
+  - Keep exported backup settings readable while requiring a password and encrypting every password, private key, passphrase, and API key field.
+  - Refuse saved secrets when Linux Electron falls back to insecure basic-text storage.
+  - Remove stale temporary embedded private-key files and retain Keeper master passwords only until the next Keeper lookup.
+  - Keep the sidebar sync control visible and open Account & Data when sync is not configured, while syncing immediately and showing status when it is configured.
+  - Order sidebar footer controls as one complete sequence that reverses consistently with right-side placement.
+
+- **2026-07-29**:
+  - Align background cloud-sync polling with mobile at five-minute intervals.
+
+- **2026-07-29**:
+  - Change Fleet Runbooks to open each target once in a hidden initial Connection step and skip configured connection actions for those automated opens.
+  - Reuse the same PTY sessions for every following Fleet Runbook step.
+  - Send Fleet Runbook commands with a leading space to suppress shell history on compatible systems while keeping runbook status probes out of command output.
+  - Show Finished for successful Fleet Runbook steps with no output.
+  - Show the same Fleet Runbook passed, skipped, and failed result counters and status colors as mobile.
+  - Use the global connection stagger for Fleet Runbooks instead of per-runbook concurrency.
+  - Stop the whole Fleet Runbook on any connection or command failure when Fail on single error is enabled.
+  - Prompt immediately when encrypted cloud sync detects a conflict.
+  - Skip cloud uploads when saved settings have not changed.
+  - Poll for remote cloud changes while the app is open or regains focus or network access.
+  - Automatically download newer cloud settings when this device is clean.
+  - Let users choose whether to download the cloud configuration or upload the current local configuration when both sides changed.
+  - Let KaiTerm start after Pro is removed even when existing local settings still contain Standard-limited Pro features.
+  - Keep remote action exit-code probes from being sent into password, passphrase, or confirmation prompts.
+  - Suppress hidden remote status probes and AI discovery commands from compatible shell history.
+  - Keep the Account & Data email field read-only after a verification code is sent, with only code entry and a cancel action until the user verifies or restarts the email step.
+- **2026-07-28**:
+  - Hide the terminal right-click Actions submenu for SFTP and FTP connections, where terminal actions cannot run.
+  - Add a consistent tab context menu for recursively nesting complete tabs and their existing split layouts horizontally or vertically.
+  - Keep terminal-to-tab splitting limited to nesting the selected tab beside only the clicked terminal without disturbing its surrounding split layout.
+  - Exclude the current tab from split candidates.
+  - Create or join runtime clusters with every terminal in the tab.
+  - Support popping out and closing the complete tab.
+  - Make middle-click close terminal tabs consistently across Linux, Windows, and macOS.
+- **2026-07-26**:
+  - Make Open local terminal default to Ctrl/Cmd+Shift+T.
+  - Preserve customized editable shortcut bindings instead of restoring Open local terminal to Ctrl/Cmd+T after Settings is saved or the app is reopened.
+- **2026-07-24**:
+  - Make Remote actions send each line with the terminal's normal Enter input.
+  - Wait for a prompt only when another Remote action line follows across the complete ordered action sequence.
+  - Clear stale prompt state between Remote action lines.
+  - Return immediately after the final Remote action line so passwords, confirmations, and long-running commands do not incur duplicate prompts, extra output, or completion timeouts.
+  - Consistently name the containing feature Actions while reserving command for its individual lines.
+  - Identify protocol-specific fields in the bulk connection editor while keeping concise labels in individual connection panels.
+  - Move the local shell program from Terminal into Programs and reorder the panel by dependency.
+  - Group local shell, OpenSSH, connection-client, and external secret-provider programs under clear in-panel headings.
+  - Let connection editors create, securely save, refresh, and immediately select a new reusable global secret from a compact application-styled dialog beside an aligned Secret selector control.
+- **2026-07-23**:
+  - Make release builds explicitly dispatched so tag pushes no longer start CI automatically.
+  - Launch tagged GitHub release builds through GitHub CLI.
+  - Let manual releases proceed without waiting for an action to be stopped.
+
 ## v2.0.0
 
 - **2026-07-23** : Make manual and GitHub release changelog versioning portable across macOS and Linux instead of relying on incompatible in-place `sed` syntax.
@@ -13,9 +72,7 @@
 - **2026-07-21** : Add native macOS application-menu entries for opening Settings with Cmd+, and starting a local terminal with Cmd+T, align and migrate the editable local-terminal shortcut to the same binding, and support menu actions when they recreate a closed main window.
 - **2026-07-21** : Migrate legacy Ctrl-based application shortcuts to the platform-neutral primary modifier so they consistently use Command on macOS and Ctrl on Linux and Windows, display the macOS Option modifier by its native name, recognize Option-modified letter and number keys reliably, leave unassigned Ctrl combinations available to terminal applications, and remove the duplicate shortcut reference table from Settings.
 - **2026-07-21** : Refine the application visual system with a purposeful terminal empty state, grouped sidebar actions, color-coded right-aligned connection-type labels instead of status-like colored dots, stronger typography and surface hierarchy, compact card-like operational rows, independently scrollable grouped Settings navigation, global type-to-search outside interactive controls, and more polished dialog and control styling across dark and light modes; keep long connection trees constrained to the sidebar and independently scrollable.
-- **2026-07-21** : Restore connection-tree and active-terminal context-menu actions for opening saved SSH and Mosh profiles as temporary SFTP sessions, carrying across compatible SSH forwarding, compression, verbosity, timeout, proxy-jump, additional-option, and before-connect settings without changing the saved profile, and visually group related context-menu commands.
 - **2026-07-19** : Expand Standard by making CSV connection import, saved clusters, runtime clusters, cluster colors, connection stagger, and basic SSH/SFTP proxy jumps free, while allowing two saved managed tunnels and two Fleet Runbooks for Standard users, restricting Standard managed-tunnel endpoint opening to the first two saved tunnels, rejecting comma-separated host lists unless KaiTerm Pro is active, restoring Pro backups on Standard by keeping each connection's first host, removing unused main-process bindings, and keeping unlimited tunnels, unlimited runbooks, unique SOCKS proxy ports, host probing, host failover, startup automation, AI, and encrypted sync in KaiTerm Pro.
-- **2026-07-19** : Remove the generated local-to-remote action mode from action normalization, terminal execution, startup action execution, runbook step editing, terminal context menus, settings editors, and product documentation so command actions are only remote or local, allow local actions to target Linux, macOS, Windows, or all desktop platforms with menu filtering and runtime guards, replace raw per-connection prepend lists with ordered before-connect local actions selected from the local action pool for SSH, Mosh, SFTP, and FTP, rename the SSH stored fields to `ssh_before_connection` and `ssh_after_connection` with migration from `ssh_prepend_actions` and `ssh_startup_template`, add `mosh_before_connection`, `mosh_after_connection`, `sftp_before_connection`, and `ftp_before_connection`, and clarify the startup UI labels as Before connection starts, After connection connects, Before connection starts, and After connection connects.
 - **2026-07-19** : Make active and selected interface states easier to distinguish by adding accent markers to the current terminal tab, selected connection, settings category, dropdown selection, and connection-tree drop targets, center terminal tab titles in wider tabs between fixed tab controls, clear the connection-tree selection while a local terminal is active, and add an Appearance setting for choosing the app accent color.
 - **2026-07-18** : Add KaiTerm Pro AI mode, enforced at both UI and IPC boundaries, for saved SSH connections with an interactive terminal and connection-scoped OpenAI, Grok, Gemini, or Ollama chat, optional per-connection AI context that identifies likely server roles and services while requiring runtime verification, user-approved per-connection AI memories that are proposed from stable non-secret host facts, saved through settings with redaction and caps, synced with the connection, and included in future AI sessions as stale-until-verified context, one-shot terminal-selection context for requests such as "analyze this" with visible inclusion counts, truncation, secret redaction, and untrusted-output handling, shell-prompt verification plus alternate-screen detection that prevents approved commands from being sent into Less, Vim, Nano, `top`, or another active program and keeps blocked proposals retryable, completion-timeout-free approved commands that may run for hours with live output, bounded analysis capture, a repeatable Ctrl+C Abort control, and explicit aborted results, multiple named AI configurations with independently encrypted hosted-provider API keys, refreshable OpenAI and xAI models loaded from each provider's `GET /v1/models` endpoint with actionable provider error details, compatible Gemini models loaded from Google's model API, in-app OpenAI Platform and Google AI Studio API key setup guidance, or Ollama models selected from `ollama list`, an Open with AI connection submenu for choosing the required configuration per terminal, optional per-configuration Bash history suppression that safely enables `HISTCONTROL=ignorespace` and prefixes approved AI commands with a space, schema-enforced Ollama replies that consistently separate messages from command approval cards without exposing internal tool markup, automatic discovery of `/etc/os-release`, `lsb_release`, the current user and groups, PATH, sudo availability, and the kernel, command availability checks that avoid invented absolute executable paths, explicit Run or Skip approval for every AI-proposed command across providers, visible command execution, automatic output analysis and follow-up proposals, API key protection through local secure storage plus the same passphrase encryption used by cloud sync and encrypted backups, risk labels, sensitive-output redaction, and isolation from terminal splits, duplication, pop-outs, and clusters.
 - **2026-07-17** : Store editable application shortcuts with a platform-neutral primary modifier so synced shortcuts use Ctrl on Linux and Windows or Command on macOS, display macOS shortcuts as Cmd in Settings, and use the same primary modifier for terminal link opening.
@@ -52,9 +109,7 @@
 
 - **2026-07-13** : Initial KaiTerm desktop app for managing SSH-heavy workflows in an Electron terminal workspace.
 - **2026-07-13** : Connection tree with folders, search, keyboard navigation, protocol colors, context menus, cloning, editing, and deletion.
-- **2026-07-13** : Local terminal sessions plus SSH, Mosh, SFTP, and FTP connection profiles.
 - **2026-07-13** : xterm.js workspace with tabs, horizontal and vertical splits, duplicate terminals, tab reordering, pop-out windows, copy/paste, reset, clear, and exit actions.
-- **2026-07-13** : Per-connection and global protocol settings for SSH, Mosh, SFTP, and FTP.
 - **2026-07-13** : Reusable secrets for passwords, login passwords, and login keys, with encrypted local storage and file loading for private keys.
 - **2026-07-13** : Global and per-connection command actions, including remote actions, local actions, template variables, and editable shortcuts.
 - **2026-07-13** : Appearance settings for app color mode, terminal themes, fonts, cursor shape, scrollback, bell, sidebar placement, and visible scrollbars.
