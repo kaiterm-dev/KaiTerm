@@ -1,8 +1,9 @@
 # KaiTerm
 
 KaiTerm is a desktop connection manager for SSH-heavy workflows. It combines an
-xterm.js terminal workspace with a searchable connection tree, reusable secrets,
-scripted actions, local backup/restore tools, and optional KaiTerm Pro features
+xterm.js terminal workspace with a searchable connection tree, per-tab tmux or
+screen persistence, reusable secrets, organized actions, local backup/restore tools,
+and optional KaiTerm Pro features
 for unlimited Fleet Runbooks and managed SSH tunnels, startup automation,
 advanced connection workflows, connection-scoped AI assistance, and encrypted
 sync.
@@ -30,7 +31,7 @@ the keyboard. Saved clusters appear in a dedicated cluster section.
 - Type anywhere in the focused tree to search, or use the search shortcut for
   fast connection lookup. On macOS the search field shares the title bar; on
   platforms with right-side window controls it appears above the tree while in
-  use.
+  use. The first match is selected automatically, so Enter opens it immediately.
 - Ctrl/Cmd-click individual connections or Shift-click a range, then open,
   bulk edit, or delete the selected connections from one context menu.
 - Context menu actions for starting, editing, cloning, and deleting
@@ -60,13 +61,16 @@ desktop app. Local terminals and remote sessions share the same workspace.
 - Split terminals horizontally or vertically.
 - Combine multiple terminals in one tab.
 - Drag terminal tabs to reorder them.
-- Pop a terminal out into a separate window and reattach it later.
+- Pop a complete tab, including its nested split layout, into a separate window
+  and reattach it from the terminal context menu.
 - Copy, paste, clear, reset, and exit from the terminal context menu.
 - Configurable terminal font, font size, cursor shape, scrollback,
   scroll-on-keystroke behavior, audible bell, and disconnect behavior.
 - Bell and connection-state indicators on tabs.
 - Inset pill-style tabs share the draggable title area while preserving clear
   native window-control space on macOS, Linux, and Windows.
+- Keep each SSH tab independently resumable through a uniquely named tmux or
+  screen session derived from its connection and terminal identifiers.
 
 ### Clusters
 
@@ -170,6 +174,8 @@ settings.
 - Inline username, password, private key, and key passphrase fields when no
   reusable secret is selected.
 - Per-connection overrides for SSH, SFTP, and FTP options.
+- None, screen, or tmux SSH persistence, with a separate remote session for
+  every terminal tab opened from the same connection.
 - Manual per-connection SSH actions.
 - SSH/SFTP proxy jump selection.
 - Standard connections use a single host. KaiTerm Pro adds port probing,
@@ -209,6 +215,8 @@ SSH options include:
 - Connect timeout.
 - Additional raw SSH options.
 - SSH/SFTP proxy jump support.
+- Optional screen or tmux persistence that requests a PTY, creates or attaches
+  the tab's own remote session, and closes the terminal when that session ends.
 - KaiTerm Pro: unique SOCKS proxy allocation with a dynamic local port.
 - KaiTerm Pro: port probing and comma-separated host failover.
 
@@ -235,9 +243,11 @@ used as startup automation.
 ![Action settings](https://kaiterm.dev/resources/screenshots/desktop-15-settings-commands.png)
 
 - Global and per-connection SSH actions.
-- Choose whether each action appears in the terminal right-click menu. Hidden
+- Choose whether each action appears in the terminal context menu. Hidden
   actions remain available to startup automation, which keeps startup-only
   commands out of established terminal sessions.
+- Put context-menu actions in slash-delimited folders, with empty or `/` keeping
+  an action at the menu root.
 - Remote actions that run on the remote SSH session.
 - Local actions that run on the local machine, with optional Linux, macOS, or
   Windows targeting so desktop-specific commands only appear and run on the
@@ -320,7 +330,8 @@ KaiTerm can be tuned for different terminal habits and layouts.
   clusters, SSH, SFTP, and FTP entries.
 - Font family and font size controls.
 - Block, underline, and bar cursor shapes.
-- Configurable scrollback lines and scroll-on-keystroke behavior.
+- Configurable scrollback lines and scroll-on-keystroke behavior, with `-1` for
+  unlimited scrollback and `0` to disable it.
 - Optional audible bell.
 - Sidebar on the right or left.
 - Optional visible scrollbar.
@@ -363,9 +374,10 @@ The tree and editors also provide fixed keyboard interactions:
 | Feature | Standard | Pro |
 | --- | --- | --- |
 | Local terminal workspace, tabs, splits, and pop-outs | Yes | Yes |
+| Per-tab SSH persistence with tmux or screen | Yes | Yes |
 | SSH, SFTP, and FTP profiles | Yes | Yes |
 | Folder tree, search, local backup, and reusable secrets | Yes | Yes |
-| Manual local and remote actions | Yes | Yes |
+| Manual local and remote actions with context-menu folders | Yes | Yes |
 | AI configurations, connection context, model discovery, interactive assistance, and approved command execution | No | Yes |
 | Managed SSH tunnels with status and automatic startup | Up to 2 | Unlimited |
 | Fleet Runbooks with per-host status and reused terminal sessions | Up to 2 | Unlimited |
@@ -408,21 +420,22 @@ KaiTerm includes free local backup tools and KaiTerm Pro encrypted settings sync
   red status when an error needs attention.
 - Explicit local-settings uploads remain available when automatic background
   sync has been disabled for the current launch.
-- Local sync passphrase storage through Electron secure storage.
-- Plaintext backup export containing the complete portable configuration,
-  including passwords, private keys, and API keys, after an explicit warning.
-- Optional whole-file backup encryption with an independent backup password.
-- File-first restore that detects encrypted backups and requests their backup
-  password without reading or changing the sync passphrase.
+- An inline Save action for the sync passphrase that stores it through Electron
+  secure storage and attempts a normal sync, plus manual Download Cloud and
+  Upload Local actions whenever a passphrase is saved.
+- Manual upload always uses the stored passphrase; manual download reports an
+  invalid passphrase instead of replacing local settings.
+- Password-protected JSON backup export that keeps ordinary settings readable
+  while encrypting every password, private key, passphrase, and API key field.
+- File-first restore that requests the independent backup password without
+  reading or changing the sync passphrase.
 - Sync logout.
 - CSV import for external connection migrations.
 
 Sensitive sync data is encrypted client-side before upload using aes-256-gcm
 with a pbkdf2-sha256 derived key. Locally stored passwords, private keys, and
-key passphrases are encrypted with Electron `safeStorage`. Encrypted backups
-wrap the entire portable settings document in a separate aes-256-gcm envelope
-derived only from the user-provided backup password; plaintext backups contain
-their portable secret values unencrypted.
+key passphrases are encrypted with Electron `safeStorage`. Portable backup
+secret fields use independent password-derived aes-256-gcm envelopes.
 
 ### Updates
 
@@ -470,23 +483,23 @@ homepage and repository links open in the system browser.
 | ![Terminal settings](https://kaiterm.dev/resources/screenshots/desktop-09-settings-terminal.png) | Terminal behavior preferences |
 | ![Connection settings](https://kaiterm.dev/resources/screenshots/desktop-10-settings-connections.png) | Connection defaults |
 | ![Secrets](https://kaiterm.dev/resources/screenshots/desktop-11-settings-secrets.png) | Reusable secret management |
-| ![SSH settings](https://kaiterm.dev/resources/screenshots/desktop-12-settings-ssh.png) | Global SSH options |
+| ![SSH settings](https://kaiterm.dev/resources/screenshots/desktop-12-settings-ssh.png) | Global SSH authentication, forwarding, proxy, and diagnostic options |
 | ![SFTP settings](https://kaiterm.dev/resources/screenshots/desktop-13-settings-sftp.png) | Global SFTP options |
 | ![FTP settings](https://kaiterm.dev/resources/screenshots/desktop-14-settings-ftp.png) | Global FTP options |
-| ![Commands](https://kaiterm.dev/resources/screenshots/desktop-15-settings-commands.png) | Global action commands |
+| ![Commands](https://kaiterm.dev/resources/screenshots/desktop-15-settings-commands.png) | Global action commands and context-menu folders |
 | ![Tunnel settings](https://kaiterm.dev/resources/screenshots/desktop-16-settings-tunnels.png) | Saved SSH tunnel definitions |
 | ![Runbook settings](https://kaiterm.dev/resources/screenshots/desktop-17-settings-runbooks.png) | Fleet targets, commands, and failure behavior |
 | ![AI settings](https://kaiterm.dev/resources/screenshots/desktop-18-settings-ai.png) | Named OpenAI, Grok, Gemini, and Ollama configurations |
 | ![Programs](https://kaiterm.dev/resources/screenshots/desktop-19-settings-programs.png) | External program paths |
 | ![Shortcuts](https://kaiterm.dev/resources/screenshots/desktop-20-settings-shortcuts.png) | Editable keyboard shortcuts |
 | ![Variables](https://kaiterm.dev/resources/screenshots/desktop-21-settings-variables.png) | Command template variable reference |
-| ![Account and data](https://kaiterm.dev/resources/screenshots/desktop-22-settings-sync.png) | Pro account, encrypted sync, backup, restore, and CSV import |
+| ![Account and data](https://kaiterm.dev/resources/screenshots/desktop-22-settings-sync.png) | Pro account, saved sync passphrase, cloud controls, backup, restore, and CSV import |
 | ![About](https://kaiterm.dev/resources/screenshots/desktop-23-settings-about.png) | Version, license, homepage, and repository |
 | ![Multiple selected connections](https://kaiterm.dev/resources/screenshots/desktop-24-tree-multi-selection.png) | Primary and secondary connection selection with a stable count |
 | ![Bulk connection actions](https://kaiterm.dev/resources/screenshots/desktop-25-tree-multi-selection-menu.png) | Open, bulk edit, and delete actions for selected connections |
 | ![Connection context menu](https://kaiterm.dev/resources/screenshots/desktop-26-connection-menu.png) | Start, open as SFTP, edit, clone, and delete actions for one connection |
 | ![Folder context menu](https://kaiterm.dev/resources/screenshots/desktop-27-folder-menu.png) | Add, rename, launch, bulk edit, and delete actions for a folder |
-| ![Terminal context menu](https://kaiterm.dev/resources/screenshots/desktop-28-terminal-menu.png) | Clipboard, SFTP, action, split, cluster, pop-out, reset, and exit controls |
+| ![Terminal context menu](https://kaiterm.dev/resources/screenshots/desktop-28-terminal-menu.png) | Clipboard, SFTP, the Actions submenu, split, cluster, full-tab pop-out, reset, and exit controls |
 
 ## License
 

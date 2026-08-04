@@ -1,5 +1,27 @@
 # Changelog
 
+## v2.2.0
+
+- **2026-08-04**:
+  - Add None, screen, and tmux connection persistence modes with a separate named remote session for every terminal tab.
+  - Reattach persistent sessions after SSH reconnects and terminate only the matching remote session when its terminal is explicitly closed.
+  - Always request a remote pseudo-terminal for tmux and screen connections.
+  - Isolate each tmux terminal on its own server socket, avoiding failures caused by an incompatible existing tmux server.
+  - Start tmux and screen directly as the SSH remote command without an extra login-shell step.
+  - Preserve the complete terminal identifier in persistent session names.
+  - Keep verbose SSH diagnostics from being mistaken for the connection-ready signal and deleting temporary identity files before authentication completes.
+  - Apply configured terminal scrollback correctly, treating -1 as unlimited and 0 as disabled.
+  - Select the first connection search result automatically so Enter opens it immediately.
+  - Add optional action folders and organize terminal context-menu actions into matching nested submenus.
+  - Rename action settings from right-click menu to context menu.
+  - Open nested action folders one submenu at a time without horizontal menu scrolling.
+  - Make empty tab-bar space draggable and restore native double-click maximize or restore behavior.
+  - Move popped-out tabs completely out of the main window, register and load bundled fonts before recreating xterm in the destination window, keep the context menu in the popout, remove the redundant reattach header, and intercept the native close button before confirming and terminating the tab.
+
+- **2026-08-03**:
+  - Keep Save, Download Cloud, and Upload Local visible beside one sync passphrase field without a separate action panel; Save stores the passphrase and attempts a normal sync, while manual upload and download become available only after saving and always use the stored passphrase.
+  - Show the KaiTerm application icon and native application menu at the left of the tab bar when window controls are on the right.
+
 ## v2.1.0
 
 - **2026-07-31**: Point cloud sync at the new api.kaiterm.dev endpoint.
