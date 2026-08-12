@@ -63,7 +63,8 @@ desktop app. Local terminals and remote sessions share the same workspace.
 - Drag terminal tabs to reorder them.
 - Pop a complete tab, including its nested split layout, into a separate window
   and reattach it from the terminal context menu.
-- Copy, paste, clear, reset, and exit from the terminal context menu.
+- Copy, paste, clear, reset, close disconnected terminals, and exit from the
+  terminal context menu.
 - Configurable terminal font, font size, cursor shape, scrollback,
   scroll-on-keystroke behavior, audible bell, and disconnect behavior.
 - Bell and connection-state indicators on tabs.
@@ -366,6 +367,8 @@ Default editable shortcuts use Ctrl on Linux and Windows, or Command on macOS:
 The tree and editors also provide fixed keyboard interactions:
 
 - `Escape` closes the editor or clears/hides search.
+- After a remote session ends, `Enter` restarts it and `Escape` closes its
+  terminal tab.
 - `Enter` starts the selected connection or cluster.
 - `Arrow Up` / `Arrow Down` moves through visible connections and clusters.
 
@@ -499,7 +502,7 @@ homepage and repository links open in the system browser.
 | ![Bulk connection actions](https://kaiterm.dev/resources/screenshots/desktop-25-tree-multi-selection-menu.png) | Open, bulk edit, and delete actions for selected connections |
 | ![Connection context menu](https://kaiterm.dev/resources/screenshots/desktop-26-connection-menu.png) | Start, open as SFTP, edit, clone, and delete actions for one connection |
 | ![Folder context menu](https://kaiterm.dev/resources/screenshots/desktop-27-folder-menu.png) | Add, rename, launch, bulk edit, and delete actions for a folder |
-| ![Terminal context menu](https://kaiterm.dev/resources/screenshots/desktop-28-terminal-menu.png) | Clipboard, SFTP, the Actions submenu, split, cluster, full-tab pop-out, reset, and exit controls |
+| ![Terminal context menu](https://kaiterm.dev/resources/screenshots/desktop-28-terminal-menu.png) | Clipboard, SFTP, nested Actions, splits, runtime clusters, full-tab pop-out, reset, disconnected-terminal cleanup, and exit controls |
 
 ## License
 

@@ -1,8 +1,39 @@
 # Changelog
 
+## v2.2.1
+
+- **2026-08-11**:
+  - Refresh the README screenshot catalog for the current terminal context menu.
+  - List every active runtime cluster in terminal Cluster menus and let all members leave a cluster without closing their connections.
+  - Close all failed or disconnected connections from terminal context menus or the macOS File menu.
+  - Keep the macOS Edit menu focused on KaiTerm's standard editing commands.
+
 ## v2.2.0
 
-- **2026-08-04**:
+- **2026-08-10**:
+  - Require matching password and confirmation fields before exporting a backup.
+  - Show backup password validation inside the export dialog instead of behind it.
+
+- **2026-08-07**:
+  - Move Show connection type and Show connection host to the Appearance panel, after the Accent color setting, instead of the Connections panel.
+  - Move Theme after Color mode in the Appearance panel.
+  - Show the shell's prompt between and after startup/post-connect actions again; the hidden exit-status probe was gluing the shell's freshly redrawn prompt onto the same line as its own invisible marker, which discarded it during cleanup and left every following action with no prompt shown before or after it.
+  - Redraw a fresh shell prompt when the shell's own prompt text still can't be captured (for example when the last action is `reset` or `clear`), instead of leaving a blank screen.
+- **2026-08-06**:
+  - Add a global connection-list setting that optionally shows up to 15 characters of each host after its connection name.
+  - Resolve only the active connection protocol's settings so SSH, SFTP, and FTP options cannot affect one another.
+  - Identify failed startup actions by name and show the exact failed command with its exit error.
+  - Wait for hidden remote exit-status markers instead of mistaking the probe's echoed command for completion and reporting a null status.
+  - Preserve the Windows and Linux native title-bar icon/menu slot while keeping the custom title-bar tools and native window-controls overlay.
+  - Require a recorded common revision before automatic sync can download or upload existing cloud settings, leaving unrelated histories for explicit Download Cloud or Upload Local resolution.
+  - Check revision ancestry before startup sync instead of unconditionally replacing local settings with the cloud copy.
+  - Serialize expired-session recovery and reuse a token refreshed by another sync request without clearing saved account or passphrase details on errors.
+  - Make Upload Local always replace the cloud document, including when only the sync passphrase is being replaced.
+  - Make AI follow-up responses concise and stop repeating commands after the user approves them.
+  - Run approved AI commands without interactive input or pagers so they cannot become trapped in Less, More, or confirmation prompts.
+  - Show remote discovery progress and block AI message entry until discovery finishes.
+  - Hide AI discovery output behind a concise completion message and use invisible action and runbook status probes.
+  - Stop importing obsolete renamed connection-action settings.
   - Add None, screen, and tmux connection persistence modes with a separate named remote session for every terminal tab.
   - Reattach persistent sessions after SSH reconnects and terminate only the matching remote session when its terminal is explicitly closed.
   - Always request a remote pseudo-terminal for tmux and screen connections.
@@ -20,7 +51,6 @@
 
 - **2026-08-03**:
   - Keep Save, Download Cloud, and Upload Local visible beside one sync passphrase field without a separate action panel; Save stores the passphrase and attempts a normal sync, while manual upload and download become available only after saving and always use the stored passphrase.
-  - Show the KaiTerm application icon and native application menu at the left of the tab bar when window controls are on the right.
 
 ## v2.1.0
 
