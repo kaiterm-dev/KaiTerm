@@ -1,5 +1,20 @@
 # Changelog
 
+## v2.2.2
+
+- **2026-08-20**:
+  - Organize the Action Library into folders with searchable actions and clearer command editing.
+  - Let Fleet Runbooks select saved Action Library actions for each fleet workflow.
+  - Keep Runbooks before Tunnels in the Automation settings section.
+  - Copy the terminal selection reliably from the terminal context menu on macOS.
+
+- **2026-08-17**:
+  - Keep the final terminal column visible instead of letting the scrollbar cover it.
+
+- **2026-08-13**:
+  - Add a collapsible connection tree with cached collapsed state, a mirrored right-side toggle, and temporary search expansion that collapses again after opening a connection.
+  - Add an editable global shortcut for collapsing or expanding the connection tree, defaulting to Ctrl/Cmd+Alt+B.
+
 ## v2.2.1
 
 - **2026-08-11**:

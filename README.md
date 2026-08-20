@@ -236,14 +236,16 @@ FTP options include:
 - Trace mode.
 - Verbose mode.
 
-### Actions
+### Action Library
 
 Actions are named command snippets that can be run manually from a terminal or
 used as startup automation.
 
-![Action settings](https://kaiterm.dev/resources/screenshots/desktop-15-settings-commands.png)
+![Action Library](https://kaiterm.dev/resources/screenshots/desktop-15-settings-action-library.png)
 
 - Global and per-connection SSH actions.
+- Search actions by name, folder, execution type, or command, with actions
+  grouped into named folders in Settings.
 - Choose whether each action appears in the terminal context menu. Hidden
   actions remain available to startup automation, which keeps startup-only
   commands out of established terminal sessions.
@@ -270,29 +272,31 @@ Supported template variables include:
 
 ### Fleet Runbooks
 
-Fleet Runbooks execute ordered command workflows across a saved selection of SSH
-hosts. Standard includes two saved runbooks; KaiTerm Pro removes that limit.
+Fleet Runbooks execute a saved remote Action Library action across a saved
+selection of SSH hosts. Standard includes two saved runbooks; KaiTerm Pro
+removes that limit.
 
 ![Fleet Runbook manager](https://kaiterm.dev/resources/screenshots/desktop-06-overlay-runbooks.png)
 
-![Fleet Runbook settings](https://kaiterm.dev/resources/screenshots/desktop-17-settings-runbooks.png)
+![Fleet Runbook settings](https://kaiterm.dev/resources/screenshots/desktop-16-settings-runbooks.png)
 
-- Save reusable runbooks with a name, fleet, and ordered one-line commands.
+- Save reusable runbooks with a name, fleet, and selected remote Action Library
+  action.
 - Search for fleet hosts above the selected-host list, which remains sorted by
   connection path.
 - Target individual SSH hosts or recursive folders. Folder targets resolve when
   a run starts and remain saved even while the folder is empty.
 - Open every selected host in a hidden initial Connection step, then reuse each
-  PTY session for every remote and local step.
+  PTY session for the selected remote action.
 - Use the global connection stagger setting between runbook connection launches.
 - Stop the whole runbook on the first connection or command failure when Fail on
   single error is enabled, or continue with failed hosts excluded.
 - Inspect live pending, running, passed, failed, and skipped status for every
-  step and host, including captured command output.
+  action and host, including captured command output.
 - Collapse runbook settings automatically when execution starts so the live
-  output summary stays in focus. Results are grouped into collapsible steps with
+  output summary stays in focus. Results are grouped into collapsible actions with
   nested collapsible hosts, persistent passed, skipped, and failed counts, and
-  green, yellow, or red step status. Open groups remain open during live updates.
+  green, yellow, or red action status. Open groups remain open during live updates.
 - Cancel a run to prevent new commands from starting while active commands finish.
 - Open the read-only standalone manager from the sidebar toolbar to run or stop
   saved runbooks; edit their definitions only in Settings.
@@ -306,7 +310,7 @@ Standard includes two managed tunnels; KaiTerm Pro removes that limit.
 
 ![SSH Tunnel Manager](https://kaiterm.dev/resources/screenshots/desktop-07-overlay-tunnels.png)
 
-![SSH tunnel settings](https://kaiterm.dev/resources/screenshots/desktop-16-settings-tunnels.png)
+![SSH tunnel settings](https://kaiterm.dev/resources/screenshots/desktop-17-settings-tunnels.png)
 
 - Local (`-L`), remote (`-R`), and dynamic SOCKS (`-D`) forwarding.
 - Start and stop tunnels independently from terminal sessions.
@@ -355,6 +359,7 @@ Default editable shortcuts use Ctrl on Linux and Windows, or Command on macOS:
 | --- | --- |
 | `Alt+E` | Edit the selected connection or cluster |
 | `Ctrl/Cmd+F` | Focus connection search |
+| `Ctrl/Cmd+Alt+B` | Collapse or expand the connection tree |
 | `Ctrl/Cmd+Alt+H` | Split the active terminal horizontally |
 | `Ctrl/Cmd+Alt+V` | Split the active terminal vertically |
 | `Ctrl/Cmd+Shift+C` | Copy terminal selection |
@@ -489,9 +494,9 @@ homepage and repository links open in the system browser.
 | ![SSH settings](https://kaiterm.dev/resources/screenshots/desktop-12-settings-ssh.png) | Global SSH authentication, forwarding, proxy, and diagnostic options |
 | ![SFTP settings](https://kaiterm.dev/resources/screenshots/desktop-13-settings-sftp.png) | Global SFTP options |
 | ![FTP settings](https://kaiterm.dev/resources/screenshots/desktop-14-settings-ftp.png) | Global FTP options |
-| ![Commands](https://kaiterm.dev/resources/screenshots/desktop-15-settings-commands.png) | Global action commands and context-menu folders |
-| ![Tunnel settings](https://kaiterm.dev/resources/screenshots/desktop-16-settings-tunnels.png) | Saved SSH tunnel definitions |
-| ![Runbook settings](https://kaiterm.dev/resources/screenshots/desktop-17-settings-runbooks.png) | Fleet targets, commands, and failure behavior |
+| ![Action Library](https://kaiterm.dev/resources/screenshots/desktop-15-settings-action-library.png) | Searchable action commands and folders |
+| ![Runbook settings](https://kaiterm.dev/resources/screenshots/desktop-16-settings-runbooks.png) | Fleet targets, saved actions, and failure behavior |
+| ![Tunnel settings](https://kaiterm.dev/resources/screenshots/desktop-17-settings-tunnels.png) | Saved SSH tunnel definitions |
 | ![AI settings](https://kaiterm.dev/resources/screenshots/desktop-18-settings-ai.png) | Named OpenAI, Grok, Gemini, and Ollama configurations |
 | ![Programs](https://kaiterm.dev/resources/screenshots/desktop-19-settings-programs.png) | External program paths |
 | ![Shortcuts](https://kaiterm.dev/resources/screenshots/desktop-20-settings-shortcuts.png) | Editable keyboard shortcuts |
