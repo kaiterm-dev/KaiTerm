@@ -63,7 +63,7 @@ desktop app. Local terminals and remote sessions share the same workspace.
 - Drag terminal tabs to reorder them.
 - Pop a complete tab, including its nested split layout, into a separate window
   and reattach it from the terminal context menu.
-- Copy, paste, clear, reset, close disconnected terminals, and exit from the
+- Copy, paste, search output, clear, reset, close disconnected terminals, and exit from the
   terminal context menu.
 - Configurable terminal font, font size, cursor shape, scrollback,
   scroll-on-keystroke behavior, audible bell, and disconnect behavior.
@@ -78,7 +78,7 @@ desktop app. Local terminals and remote sessions share the same workspace.
 Clusters let you launch multiple saved connections together. A cluster can open
 as a single split terminal tab or as separate tabs.
 
-![Cluster editor](https://kaiterm.dev/resources/screenshots/desktop-05-overlay-new-cluster.png)
+![Cluster editor](https://kaiterm.dev/resources/screenshots/desktop-05-cluster-new.png)
 
 - Save reusable groups of connections.
 - Search and select individual connections or recursive folders from a compact
@@ -98,7 +98,7 @@ Create named AI configurations in Settings, then use Open with AI in a saved
 SSH connection's tree context menu to pair an interactive terminal with the
 selected connection-scoped OpenAI, Grok, Gemini, or Ollama chat.
 
-![AI provider configurations](https://kaiterm.dev/resources/screenshots/desktop-18-settings-ai.png)
+![AI provider configurations](https://kaiterm.dev/resources/screenshots/desktop-21-settings-ai.png)
 
 - Ask the assistant to inspect logs, diagnose problems, or make changes on the
   current host.
@@ -166,7 +166,7 @@ selected connection-scoped OpenAI, Grok, Gemini, or Ollama chat.
 Each connection profile can use global defaults or override connection-specific
 settings.
 
-![Connection general settings](https://kaiterm.dev/resources/screenshots/desktop-04-overlay-new-connection.png)
+![Connection general settings](https://kaiterm.dev/resources/screenshots/desktop-04-connection-new.png)
 
 ![Global connection defaults](https://kaiterm.dev/resources/screenshots/desktop-10-settings-connections.png)
 
@@ -174,7 +174,7 @@ settings.
 - Per-connection secret selection.
 - Inline username, password, private key, and key passphrase fields when no
   reusable secret is selected.
-- Per-connection overrides for SSH, SFTP, and FTP options.
+- Per-connection overrides for SSH, SFTP, FTP, and MySQL options.
 - None, screen, or tmux SSH persistence, with a separate remote session for
   every terminal tab opened from the same connection.
 - Manual per-connection SSH actions.
@@ -190,21 +190,21 @@ and provide slugged values for command templates.
 
 ![Secret management](https://kaiterm.dev/resources/screenshots/desktop-11-settings-secrets.png)
 
-- Store password, login password, and login key secrets.
+- Store password, login password, login key, and TLS CA certificate secrets.
 - Load private key text from a file picker.
-- Attach a secret to any SSH, SFTP, or FTP connection.
+- Attach login secrets to SSH, SFTP, FTP, or MySQL connections and reusable CA certificates to verified MySQL TLS connections.
 - Hide per-connection auth fields when a secret is selected.
 - Preserve stored secret values without showing them back in plain text.
 
-### SSH, SFTP, and FTP Options
+### SSH, SFTP, FTP, and MySQL Options
 
 KaiTerm exposes protocol-specific flags globally and per connection.
 
 ![SSH settings](https://kaiterm.dev/resources/screenshots/desktop-12-settings-ssh.png)
 
-![SFTP settings](https://kaiterm.dev/resources/screenshots/desktop-13-settings-sftp.png)
+![SFTP settings](https://kaiterm.dev/resources/screenshots/desktop-14-settings-sftp.png)
 
-![FTP settings](https://kaiterm.dev/resources/screenshots/desktop-14-settings-ftp.png)
+![FTP settings](https://kaiterm.dev/resources/screenshots/desktop-15-settings-ftp.png)
 
 SSH options include:
 
@@ -236,14 +236,23 @@ FTP options include:
 - Trace mode.
 - Verbose mode.
 
-### Action Library
+MySQL and MariaDB options include:
 
-Actions are named command snippets that can be run manually from a terminal or
-used as startup automation.
+- Global defaults with per-connection overrides.
+- Disabled TLS, encrypted TLS without certificate verification, or verified TLS.
+- Optional reusable PEM CA certificates for self-signed deployments.
+- Connect timeout.
 
-![Action Library](https://kaiterm.dev/resources/screenshots/desktop-15-settings-action-library.png)
+### SSH and SQL Actions
 
-- Global and per-connection SSH actions.
+SSH Actions are named shell command snippets that can be run manually from a
+terminal or used as startup automation. SQL Actions are named SQL statement
+sets available only in MySQL and MariaDB terminals.
+
+![SSH Actions](https://kaiterm.dev/resources/screenshots/desktop-17-settings-ssh-actions.png)
+
+- Separate global and per-connection SSH Actions and SQL Actions libraries.
+- Run SQL Actions from MySQL and MariaDB context menus, sidebars, and clusters.
 - Search actions by name, folder, execution type, or command, with actions
   grouped into named folders in Settings.
 - Choose whether each action appears in the terminal context menu. Hidden
@@ -263,7 +272,7 @@ used as startup automation.
 
 Supported template variables include:
 
-- `{name}`, `{type}`, `{folder}`, `{host}`, `{port}`
+- `{name}`, `{type}`, `{folder}`, `{host}`, `{host_rslv}`, `{port}`
 - `{identity_user}`, `{identity_password}`, `{identity_key_file}`, `{identity_key_passphrase}`
 - `{proxy_port}`, `{proxy_host}`, `{proxy_url}`
 - `{uuid}`, `{connection_path}`, `{user_host}`, `{host_port}`
@@ -276,9 +285,9 @@ Fleet Runbooks execute a saved remote Action Library action across a saved
 selection of SSH hosts. Standard includes two saved runbooks; KaiTerm Pro
 removes that limit.
 
-![Fleet Runbook manager](https://kaiterm.dev/resources/screenshots/desktop-06-overlay-runbooks.png)
+![Fleet Runbook manager](https://kaiterm.dev/resources/screenshots/desktop-06-runbooks.png)
 
-![Fleet Runbook settings](https://kaiterm.dev/resources/screenshots/desktop-16-settings-runbooks.png)
+![Fleet Runbook settings](https://kaiterm.dev/resources/screenshots/desktop-19-settings-runbooks.png)
 
 - Save reusable runbooks with a name, fleet, and selected remote Action Library
   action.
@@ -308,9 +317,9 @@ and proxy jumps. KaiTerm Pro also lets tunnel host selection use configured
 host failover.
 Standard includes two managed tunnels; KaiTerm Pro removes that limit.
 
-![SSH Tunnel Manager](https://kaiterm.dev/resources/screenshots/desktop-07-overlay-tunnels.png)
+![SSH Tunnel Manager](https://kaiterm.dev/resources/screenshots/desktop-07-tunnels.png)
 
-![SSH tunnel settings](https://kaiterm.dev/resources/screenshots/desktop-17-settings-tunnels.png)
+![SSH tunnel settings](https://kaiterm.dev/resources/screenshots/desktop-20-settings-tunnels.png)
 
 - Local (`-L`), remote (`-R`), and dynamic SOCKS (`-D`) forwarding.
 - Start and stop tunnels independently from terminal sessions.
@@ -340,18 +349,21 @@ KaiTerm can be tuned for different terminal habits and layouts.
 - Optional audible bell.
 - Sidebar on the right or left.
 - Optional visible scrollbar.
+- Search terminal output from the terminal context menu or the keyboard shortcut, with highlighted matches and previous or next controls.
 - Responsive settings and terminal layouts for narrower desktop windows.
 - Terminal themes remain independent from the app color mode, so terminal colors
   can be chosen separately from the surrounding UI.
 
 ![Appearance settings](https://kaiterm.dev/resources/screenshots/desktop-08-settings-appearance.png)
 
+![Terminal output search](https://kaiterm.dev/resources/screenshots/desktop-32-terminal-search.png)
+
 ### Keyboard Shortcuts
 
 Keyboard shortcuts can be edited in the settings dialog, with duplicate shortcut
 validation before saving.
 
-![Keyboard shortcuts](https://kaiterm.dev/resources/screenshots/desktop-20-settings-shortcuts.png)
+![Keyboard shortcuts](https://kaiterm.dev/resources/screenshots/desktop-23-settings-shortcuts.png)
 
 Default editable shortcuts use Ctrl on Linux and Windows, or Command on macOS:
 
@@ -362,6 +374,7 @@ Default editable shortcuts use Ctrl on Linux and Windows, or Command on macOS:
 | `Ctrl/Cmd+Alt+B` | Collapse or expand the connection tree |
 | `Ctrl/Cmd+Alt+H` | Split the active terminal horizontally |
 | `Ctrl/Cmd+Alt+V` | Split the active terminal vertically |
+| `Ctrl/Cmd+Shift+F` | Search the active terminal output |
 | `Ctrl/Cmd+Shift+C` | Copy terminal selection |
 | `Ctrl/Cmd+Shift+V` | Paste into terminal |
 | `Ctrl/Cmd+Shift+D` | Duplicate terminal |
@@ -402,7 +415,7 @@ The tree and editors also provide fixed keyboard interactions:
 
 KaiTerm includes free local backup tools and KaiTerm Pro encrypted settings sync.
 
-![Account, encrypted sync, backup, and import settings](https://kaiterm.dev/resources/screenshots/desktop-22-settings-sync.png)
+![Account, encrypted sync, backup, and import settings](https://kaiterm.dev/resources/screenshots/desktop-25-settings-account.png)
 
 - First-time email verification, after which the user can enroll a passkey in
   the system browser.
@@ -460,7 +473,7 @@ update when a compatible package exists for the current platform.
 
 The app can use custom executable paths for the command-line tools it launches.
 
-![Program path settings](https://kaiterm.dev/resources/screenshots/desktop-19-settings-programs.png)
+![Program path settings](https://kaiterm.dev/resources/screenshots/desktop-22-settings-programs.png)
 
 - SSH path.
 - SSH agent path and SSH add path.
@@ -473,7 +486,7 @@ The app can use custom executable paths for the command-line tools it launches.
 The About panel shows the app version, license, homepage, and repository. The
 homepage and repository links open in the system browser.
 
-![KaiTerm About panel](https://kaiterm.dev/resources/screenshots/desktop-23-settings-about.png)
+![KaiTerm About panel](https://kaiterm.dev/resources/screenshots/desktop-26-settings-about.png)
 
 ## Screenshots
 
@@ -483,31 +496,36 @@ homepage and repository links open in the system browser.
 | ![Connection tree](https://kaiterm.dev/resources/screenshots/desktop-01-main-window.png) | Main workspace, folder tree, empty state, and grouped footer actions |
 | ![Single terminal](https://kaiterm.dev/resources/screenshots/desktop-02-first-connection.png) | Single open terminal tab |
 | ![Split terminal](https://kaiterm.dev/resources/screenshots/desktop-03-first-cluster.png) | Multi-pane split terminal tab |
-| ![Connection editor](https://kaiterm.dev/resources/screenshots/desktop-04-overlay-new-connection.png) | Per-connection profile editor |
-| ![Cluster editor](https://kaiterm.dev/resources/screenshots/desktop-05-overlay-new-cluster.png) | Saved cluster editor with connection and folder targets |
-| ![Fleet Runbooks](https://kaiterm.dev/resources/screenshots/desktop-06-overlay-runbooks.png) | Running and stopping saved Fleet Runbooks |
-| ![Tunnel Manager](https://kaiterm.dev/resources/screenshots/desktop-07-overlay-tunnels.png) | Starting, stopping, and monitoring saved SSH tunnels |
+| ![Connection editor](https://kaiterm.dev/resources/screenshots/desktop-04-connection-new.png) | Per-connection profile editor |
+| ![Cluster editor](https://kaiterm.dev/resources/screenshots/desktop-05-cluster-new.png) | Saved cluster editor with connection and folder targets |
+| ![Fleet Runbooks](https://kaiterm.dev/resources/screenshots/desktop-06-runbooks.png) | Running and stopping saved Fleet Runbooks |
+| ![Tunnel Manager](https://kaiterm.dev/resources/screenshots/desktop-07-tunnels.png) | Starting, stopping, and monitoring saved SSH tunnels |
 | ![Appearance](https://kaiterm.dev/resources/screenshots/desktop-08-settings-appearance.png) | App theme, fonts, and tree colors |
 | ![Terminal settings](https://kaiterm.dev/resources/screenshots/desktop-09-settings-terminal.png) | Terminal behavior preferences |
 | ![Connection settings](https://kaiterm.dev/resources/screenshots/desktop-10-settings-connections.png) | Connection defaults |
 | ![Secrets](https://kaiterm.dev/resources/screenshots/desktop-11-settings-secrets.png) | Reusable secret management |
 | ![SSH settings](https://kaiterm.dev/resources/screenshots/desktop-12-settings-ssh.png) | Global SSH authentication, forwarding, proxy, and diagnostic options |
-| ![SFTP settings](https://kaiterm.dev/resources/screenshots/desktop-13-settings-sftp.png) | Global SFTP options |
-| ![FTP settings](https://kaiterm.dev/resources/screenshots/desktop-14-settings-ftp.png) | Global FTP options |
-| ![Action Library](https://kaiterm.dev/resources/screenshots/desktop-15-settings-action-library.png) | Searchable action commands and folders |
-| ![Runbook settings](https://kaiterm.dev/resources/screenshots/desktop-16-settings-runbooks.png) | Fleet targets, saved actions, and failure behavior |
-| ![Tunnel settings](https://kaiterm.dev/resources/screenshots/desktop-17-settings-tunnels.png) | Saved SSH tunnel definitions |
-| ![AI settings](https://kaiterm.dev/resources/screenshots/desktop-18-settings-ai.png) | Named OpenAI, Grok, Gemini, and Ollama configurations |
-| ![Programs](https://kaiterm.dev/resources/screenshots/desktop-19-settings-programs.png) | External program paths |
-| ![Shortcuts](https://kaiterm.dev/resources/screenshots/desktop-20-settings-shortcuts.png) | Editable keyboard shortcuts |
-| ![Variables](https://kaiterm.dev/resources/screenshots/desktop-21-settings-variables.png) | Command template variable reference |
-| ![Account and data](https://kaiterm.dev/resources/screenshots/desktop-22-settings-sync.png) | Pro account, saved sync passphrase, cloud controls, backup, restore, and CSV import |
-| ![About](https://kaiterm.dev/resources/screenshots/desktop-23-settings-about.png) | Version, license, homepage, and repository |
-| ![Multiple selected connections](https://kaiterm.dev/resources/screenshots/desktop-24-tree-multi-selection.png) | Primary and secondary connection selection with a stable count |
-| ![Bulk connection actions](https://kaiterm.dev/resources/screenshots/desktop-25-tree-multi-selection-menu.png) | Open, bulk edit, and delete actions for selected connections |
-| ![Connection context menu](https://kaiterm.dev/resources/screenshots/desktop-26-connection-menu.png) | Start, open as SFTP, edit, clone, and delete actions for one connection |
-| ![Folder context menu](https://kaiterm.dev/resources/screenshots/desktop-27-folder-menu.png) | Add, rename, launch, bulk edit, and delete actions for a folder |
-| ![Terminal context menu](https://kaiterm.dev/resources/screenshots/desktop-28-terminal-menu.png) | Clipboard, SFTP, nested Actions, splits, runtime clusters, full-tab pop-out, reset, disconnected-terminal cleanup, and exit controls |
+| ![Startup](https://kaiterm.dev/resources/screenshots/desktop-13-connection-startup.png) | Connection-specific SSH startup automation |
+| ![SFTP settings](https://kaiterm.dev/resources/screenshots/desktop-14-settings-sftp.png) | Global SFTP options |
+| ![FTP settings](https://kaiterm.dev/resources/screenshots/desktop-15-settings-ftp.png) | Global FTP options |
+| ![MySQL and MariaDB](https://kaiterm.dev/resources/screenshots/desktop-16-settings-mysql.png) | Database TLS and timeout defaults |
+| ![SSH Actions](https://kaiterm.dev/resources/screenshots/desktop-17-settings-ssh-actions.png) | Searchable SSH command actions and folders |
+| ![SQL Actions](https://kaiterm.dev/resources/screenshots/desktop-18-settings-sql-actions.png) | Reusable SQL statement actions |
+| ![Runbook settings](https://kaiterm.dev/resources/screenshots/desktop-19-settings-runbooks.png) | Fleet targets, saved actions, and failure behavior |
+| ![Tunnel settings](https://kaiterm.dev/resources/screenshots/desktop-20-settings-tunnels.png) | Saved SSH tunnel definitions |
+| ![AI settings](https://kaiterm.dev/resources/screenshots/desktop-21-settings-ai.png) | Named OpenAI, Grok, Gemini, and Ollama configurations |
+| ![Programs](https://kaiterm.dev/resources/screenshots/desktop-22-settings-programs.png) | External program paths |
+| ![Shortcuts](https://kaiterm.dev/resources/screenshots/desktop-23-settings-shortcuts.png) | Editable keyboard shortcuts |
+| ![Variables](https://kaiterm.dev/resources/screenshots/desktop-24-settings-variables.png) | Command template variable reference |
+| ![Account and data](https://kaiterm.dev/resources/screenshots/desktop-25-settings-account.png) | Pro account, saved sync passphrase, cloud controls, backup, restore, and CSV import |
+| ![About](https://kaiterm.dev/resources/screenshots/desktop-26-settings-about.png) | Version, license, homepage, and repository |
+| ![Multiple selected connections](https://kaiterm.dev/resources/screenshots/desktop-27-tree-multi-selection.png) | Primary and secondary connection selection with a stable count |
+| ![Bulk connection actions](https://kaiterm.dev/resources/screenshots/desktop-28-tree-multi-selection-menu.png) | Open, bulk edit, and delete actions for selected connections |
+| ![Connection context menu](https://kaiterm.dev/resources/screenshots/desktop-29-connection-menu.png) | Start, open as SFTP, edit, clone, and delete actions for one connection |
+| ![Folder context menu](https://kaiterm.dev/resources/screenshots/desktop-30-folder-menu.png) | Add, rename, launch, bulk edit, and delete actions for a folder |
+| ![Terminal context menu](https://kaiterm.dev/resources/screenshots/desktop-31-terminal-menu.png) | Clipboard, output search, SFTP, nested Actions, splits, runtime clusters, full-tab pop-out, reset, disconnected-terminal cleanup, and exit controls |
+| ![Terminal output search](https://kaiterm.dev/resources/screenshots/desktop-32-terminal-search.png) | Highlighted terminal-output matches with previous and next navigation |
+| ![Collapsed connection tree](https://kaiterm.dev/resources/screenshots/desktop-33-collapsed-tree.png) | Idle workspace with the connection sidebar collapsed |
 
 ## License
 

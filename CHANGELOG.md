@@ -1,5 +1,106 @@
 # Changelog
 
+## v3.0.0
+
+- **2026-09-17**:
+  - Refresh the documented desktop screenshot catalog for MySQL/MariaDB, SQL Actions, SSH startup, and saved automation settings.
+
+- **2026-09-16**:
+  - Show persisted cloud sync failures prominently in Account & Data and on the sync control.
+  - Open Account & Data from the sync control when sync reports an error.
+  - Keep long Secrets lists and their type picker within the Settings editor so the footer remains accessible.
+  - Hide per-connection global override options until Override global settings is enabled.
+  - Add Secrets filtering by name, slug, and username.
+  - Place labelled add buttons beside list headings or search fields in Settings and connection editors.
+  - Use Stop consistently for running runbooks in Settings and the runtime panel.
+  - Keep Stop disabled for idle and finished runbooks when Settings fields refresh.
+  - Keep runbook delete controls beside Stop, visible when the runbook is collapsed.
+  - Use consistently spaced compact expandable rows for tunnels, runbooks, secrets, actions, and AI configurations.
+  - Remove the redundant separator below the last action in a folder.
+
+- **2026-09-14**:
+  - Match the JVM cluster editor with filtering, an included-only toggle, compact checkbox rows, and protocol plus full-path labels.
+  - Show all cluster settings together in one panel without category tabs.
+  - Keep filtered cluster members aligned at the top of the editor.
+  - Separate the included-only filter from cluster member choices with compact spacing and a divider.
+  - Keep expand and footer icons neutral, color pinned Action Library icons, and show sync readiness with a green or red dot.
+  - Refresh the sync indicator immediately after a successful or failed manual sync.
+  - Extend the sidebar through the title bar only when it is opposite the native window controls.
+  - Keep the sidebar toggle square and show connection search only through its keyboard shortcut.
+  - Keep the title bar divider out of the native window controls area.
+
+- **2026-09-09**:
+  - Execute pasted SQL lines in order without dropping statements while a previous query is running.
+  - Keep idle MySQL sessions alive and show the reconnect prompt when the backend disconnects or stops responding.
+  - Keep the shared tab selected when focusing any terminal in a split.
+  - Send SSH keepalives every 30 seconds and detect unresponsive connections after three unanswered probes.
+  - Reconnect disconnected terminals with Enter, close with Escape, and ignore other keys.
+  - Optionally retain terminal scrollback when reconnecting through Terminal settings.
+  - Replace automatic reconnect with consistent Wait for key and Close immediately disconnect choices.
+  - Restore a temporarily expanded sidebar when connection search loses focus or Escape is pressed.
+
+- **2026-09-08**:
+  - Connect to MySQL and MariaDB directly or through a saved SSH connection, and run SQL in an integrated results workspace.
+  - Give MySQL and MariaDB connections their own cyan connection-tree color.
+  - Keep searchable Secret and SSH connection selectors responsive after repeated use.
+  - Hide the database SSH connection selector for direct connections.
+  - Open database sessions in regular terminal tabs with splits, popouts, clusters, terminal settings, context menus, multiline statements, history, actions, and tabular MySQL-style results.
+  - Support MySQL vertical `\G` output, custom delimiters, source files, warnings, database switching, reconnecting, output logging, and query interruption.
+  - Let Ctrl+D exit MySQL from an empty prompt and show the standard reopen-or-close prompt after a session exits or a query is interrupted.
+  - Separate pinned Actions visually from Connections.
+  - Split the Action Library into SSH Actions and SQL Actions, preserving existing MySQL connection actions as SQL Actions.
+  - Extend SQL statement fields across the available action-editor width.
+  - Default new MySQL and MariaDB connections to port 3306.
+  - Make every Electron editor dropdown type-to-filter while lazily initializing large option lists to keep editors responsive.
+  - Add global and per-connection MySQL protocol settings with disabled, trust-all, and verified TLS modes plus reusable CA certificate secrets.
+  - Allow open editor dropdowns to extend beyond scroll panels instead of being clipped by their containers.
+  - Keep searchable Settings dropdowns stable across repeated clicks and show the system trust store as a normal certificate selection.
+  - Support cursor movement, Home, End, Delete, history keys, and clean Ctrl+L redraws in MySQL terminal input without printing escape sequences or duplicate prompts.
+
+- **2026-09-07**:
+  - Add the pending idle-workspace capture with its connection sidebar collapsed to the README screenshot catalog.
+
+- **2026-09-04**:
+  - Add `{host_rslv}` for actions that need the selected host as a resolved IP address.
+  - Show pinned actions as a flat, left-aligned `folder/name` list in the expanded connection tree.
+
+- **2026-09-03**:
+  - Show the runtime cluster name as a simple compact text form without category navigation.
+  - Allocate a different dynamic SOCKS port for every terminal session, including repeated opens of the same connection.
+  - Hide pinned actions while searching the connection tree so keyboard navigation cycles through connections and clusters only.
+
+- **2026-08-31**:
+  - Prevent multiple KaiTerm processes from invalidating the same rotating sync session during simultaneous refreshes.
+  - Replace the compressed connection search field with a search button while the connection tree is collapsed.
+  - Remove the stray vertical separator beside collapsed sidebar actions.
+  - Launch the macOS development app natively on Apple Silicon and keep its cached Electron runtime architecture-specific.
+
+- **2026-08-27**:
+  - Preserve a selected terminal newline consistently across native, shortcut, and context-menu copy.
+  - Remove the extra terminal column reserved beside the scrollbar.
+
+- **2026-08-26**:
+  - Add Text, Hidden, and password-prompt-only modes to each remote Action Library command.
+  - Show a safe placeholder when an Action Library password is sent.
+
+- **2026-08-25**:
+  - Wrap connection-tree keyboard selection between the first and last visible items.
+  - Reload the latest saved connection settings before automatically or manually reconnecting a terminal.
+  - Move a terminal out of a split panel into its own tab from the terminal context menu.
+  - Resize horizontal and vertical split terminal panels by dragging their separators.
+  - Clear connection search when focus leaves the connections tree.
+  - Return scrolled terminal output to the prompt when typing if Scroll on keystroke is enabled.
+  - Avoid an uncaught resize error when a terminal exits during a window layout update.
+  - Download connections and plaintext credentials as an importable CSV file.
+
+- **2026-08-24**:
+  - Show sidebar actions vertically in a consistent order when the connection tree is collapsed.
+
+- **2026-08-21**:
+  - Keep terminal text clear of the scrollbar with the reserved space on its inside edge.
+  - Search terminal output from the terminal context menu or an editable shortcut with highlighted previous and next matches.
+  - Pause incoming terminal output while search is open and display it when search closes.
+
 ## v2.2.2
 
 - **2026-08-20**:
