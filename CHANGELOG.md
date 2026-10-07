@@ -1,287 +1,313 @@
 # Changelog
 
-## v3.0.0
+## v3.6.0
 
-- **2026-09-17**:
-  - Refresh the documented desktop screenshot catalog for MySQL/MariaDB, SQL Actions, SSH startup, and saved automation settings.
+- 2026-10-07:
+  - Save the connection editor, Settings, cluster editor, bulk edit, and New secret dialogs when Enter is pressed in a single-line text field.
+  - Download the JetBrains Runtime 25 SDK on macOS and Windows too, so `build.sh` no longer fails there with "Cannot find a Java installation ... vendor JetBrains".
 
-- **2026-09-16**:
-  - Show persisted cloud sync failures prominently in Account & Data and on the sync control.
-  - Open Account & Data from the sync control when sync reports an error.
-  - Keep long Secrets lists and their type picker within the Settings editor so the footer remains accessible.
-  - Hide per-connection global override options until Override global settings is enabled.
-  - Add Secrets filtering by name, slug, and username.
-  - Place labelled add buttons beside list headings or search fields in Settings and connection editors.
-  - Use Stop consistently for running runbooks in Settings and the runtime panel.
-  - Keep Stop disabled for idle and finished runbooks when Settings fields refresh.
-  - Keep runbook delete controls beside Stop, visible when the runbook is collapsed.
-  - Use consistently spaced compact expandable rows for tunnels, runbooks, secrets, actions, and AI configurations.
-  - Remove the redundant separator below the last action in a folder.
+- 2026-10-06:
+  - Open and close tree and terminal context menus with the `menu` and `close-menu` automation commands.
+- 2026-10-05:
+  - Download a JetBrains Runtime 25 SDK on Linux when the build needs one, or use `JBR_HOME`, so `build.sh` and `start.sh` no longer fail with "Cannot find a Java installation ... vendor JetBrains".
+  - Give libssh2 terminals the window's real size as soon as they connect, instead of 100×30 until the next manual resize, so vim and other full-screen programs start at the right size.
+  - Run Fleet Runbooks with the shared engine (same order, statuses, skipping and cancellation as before).
+  - No visible change: the desktop's tunnel proxy and port-forward code now has a shared counterpart that Android uses.
+  - Take the Fleet Runbook status roll-up and skip/cancel messages from the shared library.
+  - Use the shared library for host key verification, tunnel validation and forwarding, command variables, cluster and search rules, output cleanup and default settings, so connections behave the same as on Android and iOS.
+  - Offer the universal macOS app as a ZIP download alongside the DMG.
+  - Offer updates from the release asset that matches the installed package's platform, so the Windows portable ZIP and the macOS ZIP are never mixed up.
+  - SFTP and FTP connections no longer launch the `sftp` and `ftp` programs: SFTP runs on libssh2 and FTP on the shared client Android and iOS use, in a terminal tab with an sftp-style command line (ls, cd, pwd, get, put, mkdir, rm, rmdir, lls, lcd, lpwd, help, bye). `--no-libssh2` keeps the external programs.
+  - MySQL over SSH opens its tunnel with libssh2 instead of launching `ssh -L`.
+  - The SFTP and FTP command line gains rename/mv, chmod, wildcards (`*`, `?`, `[..]`) in ls/get/put/rm, recursive `get -r`, `put -r` and `rm -r`, and shows the absolute remote directory in pwd.
+  - Ask before trusting an unknown SSH or SFTP host key or FTPS certificate (and again if it changes) for libssh2 terminals, SFTP, FTP and MySQL over SSH; trusted fingerprints are kept in known_hosts.json.
+  - FTP connections use explicit TLS (FTPS) when the server offers it, with the new FTP "TLS (FTPS)" setting (use when offered, required, off); the command line warns when a connection is not encrypted.
+  - MySQL over SSH serves every connection a client opens, not just the first one.
+  - Hide the OpenSSH-only connection options (X11 forwarding, verbose, very verbose, force PTY, additional options) unless the app starts with `--no-libssh2`; libssh2 connections still apply the additional options they support (ciphers, MACs, key exchange, host key algorithms, timeout, compression, keepalive, StrictHostKeyChecking) and ignore the rest.
+  - Add a "Host key checking" setting (ask, trust new and refuse changed, don't check) to the global SSH and SFTP settings, and "Certificate checking" to FTP, each overridable per connection; MySQL over SSH follows its SSH connection.
+  - Add libssh2 settings to the global SSH and SFTP pages and the connection overrides: keepalive interval and unanswered-keepalive count (0 turns keepalives off), ciphers, MACs, key exchange and host key algorithms, address family, an SSH agent socket path, and a known_hosts file whose matching keys are trusted without asking (OpenSSH plain, wildcard and hashed entries; it never blocks a connection). They are hidden with `--no-libssh2`.
+  - Verify the proxy-jump host's key before authenticating to it, using that connection's own host key checking and known_hosts file, and use its SSH agent socket; previously jump hosts were accepted without a check, and a hop's options could overwrite the target's timeout and address family.
+  - Resolve libssh2 SSH, SFTP, FTP and MySQL connections with the same resolver Android uses, so settings, secrets, proxy jumps, host failover and the Standard limits behave the same: a missing proxy-jump connection is now an error instead of a silent direct connection, host failover and probing work with libssh2, a MySQL TLS mode outside disabled/trust/verify falls back to verify, and an unknown or duplicated secret slug fails instead of sending an empty value.
+  - Add a "strict" host key mode (refuse unknown hosts) next to ask, accept-new and off; host names are compared case-insensitively.
+  - Remove the X11 forwarding setting; the unique SOCKS proxy stays here as the desktop-only option it is.
+  - Run startup actions, AI chats, cloud sync and backups on the same code Android and iOS run: one prompt-driven action engine, one AI chat session (same prompts, tools, redaction and Ollama support), and one sync engine (same conflict rules, session refresh and backup format). Saved actions no longer run through a desktop-only copy, and AI commands, backups and CSV imports behave the same everywhere.
+  - Check tunnels, runbooks, actions and AI configurations when saving settings, and open SFTP from an SSH connection with its host key, keepalive and algorithm settings.
+  - Remove Bitwarden and Keeper: the four secret types, their item and field settings, and the Bitwarden/Keeper CLI path settings.
+  - Show Settings > Programs only when the app starts with `--no-libssh2`, and list only the programs the app actually launches (SSH, SFTP, FTP); remove the unused SSH agent, ssh-add and "use SSH agent" settings and move "Shell program" to Terminal.
+  - Make every single-line field and dropdown (text inputs, plain and searchable dropdowns, bulk-edit and add-action pickers) exactly the same height with the same padding, and use Material 3 with compact typography so text is no longer widely spaced.
+  - Update pty4j to 0.14.0, slf4j-simple to 2.0.20 and Gradle to 9.8.0, and rebuild the vendored macOS libssh2/OpenSSL libraries against OpenSSL 3.6.5 (the vendor script now targets 3.6.5; the Linux libraries still need rebuilding on Linux).
+  - Drop the Jewel UI library: the app now uses plain Compose (Material 3 widgets under its own `KaiTermTheme` and `DesktopUi` wrappers) with the same palette, compact controls and light/dark switching.
+  - Use one shared `HttpClient` for the account server and the AI providers instead of three hand-rolled `HttpURLConnection` clients; the AI Stop button now cancels the request itself.
+  - Cluster broadcast now relays exactly what is typed or pasted, using JediTerm's own user-input flag instead of matching reply text (this also stops terminal auto-replies reaching SSH and MySQL cluster siblings).
+  - Make the "Reset terminal" menu item work (it called a JediTerm action that does not exist).
+  - Open links with Cmd/Ctrl+click by reading the click's own modifiers instead of tracking the key globally (no more stale modifier after switching windows).
+  - Detect the system light/dark appearance at startup natively (macOS, Windows and Linux) instead of running `defaults`.
+  - Minimise through the window state, use FlatLaf's property constants, and drop duplicate JSON helpers.
+  - Open a searchable dropdown when its field is clicked, scrolled to and highlighting the current value, and stop cutting its list at 80 entries.
+  - Remove the "Open local terminal" button; when every tab is popped out the main window shows the standard workspace content.
+  - Keep the main window's terminal visible when a popped-out window is selected or one of its panes is closed.
+  - Remove a popped-out tab from the tab bar (it lives in its own window until that window is closed or the tab is reattached), and move on to a neighbouring tab.
+  - Replace the settings dropdowns with ones that move with Up/Down, pick with Enter, and close with Escape without closing the dialog.
+  - Fill in a new secret's slug as its label is typed (until the slug is edited by hand).
+  - Add new secrets at the top of the Secrets list, from both the Secrets settings and a connection's "New secret".
 
-- **2026-09-14**:
-  - Match the JVM cluster editor with filtering, an included-only toggle, compact checkbox rows, and protocol plus full-path labels.
-  - Show all cluster settings together in one panel without category tabs.
-  - Keep filtered cluster members aligned at the top of the editor.
-  - Separate the included-only filter from cluster member choices with compact spacing and a divider.
-  - Keep expand and footer icons neutral, color pinned Action Library icons, and show sync readiness with a green or red dot.
-  - Refresh the sync indicator immediately after a successful or failed manual sync.
-  - Extend the sidebar through the title bar only when it is opposite the native window controls.
-  - Keep the sidebar toggle square and show connection search only through its keyboard shortcut.
-  - Keep the title bar divider out of the native window controls area.
+- 2026-10-03:
+  - Stop Shift from opening connection search with a blank character when Shift+clicking a range in the connection tree.
+  - Open dropdown menus at exactly the width of their field instead of extending past both edges.
+  - Select the existing query when the connection search or terminal search shortcut is used again.
+  - Show new SSH and SQL Actions at the top of the list, and move an action to its folder only after Settings are saved.
+  - Show actions added in the connection editor's SSH Actions immediately instead of inside a collapsed folder.
+  - Open fixed-choice dropdowns on any click without a text cursor, and list their choices in their natural order, such as Text, Hidden, Password for action commands.
+  - Show each action's folder in the connection Startup lists and sort the action choices alphabetically.
+  - Add opt-in local automation with `--automation`, and send automation commands from the command line with `--automate`.
+- 2026-10-02:
+  - Stop highlighting URLs in terminals; Ctrl/Cmd+click still opens them.
+  - Post-connection actions: recognise `>` and `%` (and a bare `$`, `#`, `>` or `%`) as shell prompts and any line mentioning a password or passphrase followed by a colon as a password prompt (shared with Android).
+  - Make Password steps wait for such a prompt before sending, instead of firing as soon as the previous command was echoed; fail the action if none appears within 30 seconds, like Android, iOS and Electron.
+  - Pause between cluster/folder connections and between Fleet Runbook commands with the stagger setting.
+  - Rename the "Connection stagger" setting to "Connections and commands stagger" and also use it as the pause between post-connection commands (still used between Fleet Runbook hosts).
+  - Make macOS native dialogs (file open/save, such as Export KaiTerm Backup) follow the app's light/dark mode, including after it changes while the app is running.
+  - Select the first result in tree order, not saved order, when searching the connection tree.
+  - Enable multi-statement queries in the MySQL terminal (`select 1; select 2;`) and show the result of every statement.
+  - Clip terminal text selections at the last character containing output.
+  - Clarify the connection stagger unit and adjustment increment in its setting label.
+  - Compact secret identity and credential fields into shared rows while keeping key fields full-width.
+  - Show the connection editor's Password next to Username as a single-line field, and make Key passphrase single-line.
+  - Add inset padding inside multiline text editors.
+  - Add more space after the secret list.
+  - Add bottom padding below the last field of expanded settings list items such as secrets.
 
-- **2026-09-09**:
-  - Execute pasted SQL lines in order without dropping statements while a previous query is running.
-  - Keep idle MySQL sessions alive and show the reconnect prompt when the backend disconnects or stops responding.
-  - Keep the shared tab selected when focusing any terminal in a split.
-  - Send SSH keepalives every 30 seconds and detect unresponsive connections after three unanswered probes.
-  - Reconnect disconnected terminals with Enter, close with Escape, and ignore other keys.
-  - Optionally retain terminal scrollback when reconnecting through Terminal settings.
+- 2026-10-02:
+  - Add "Swap split panels" and "Switch split direction" to the terminal and tab context menus and the Terminal menu: a terminal acts on its innermost split, a tab on its outermost.
+
+- 2026-10-01:
+  - Add an "Extra word separators" terminal setting controlling where a double-click selection stops (default `=;`).
+  - On Linux, selecting text fills the X11 primary selection and middle-click pastes it, without touching the Ctrl+C / Ctrl+V clipboard.
+  - Add build-windows.ps1, which installs the Windows build dependencies (MSYS2, JDK 25, WiX), builds the libssh2 libraries and packages the app.
+  - Add a Windows (x86_64, MinGW-w64) build of the libssh2 library and enable the built-in SSH client on Windows too.
+  - Use the built-in libssh2 client for SSH terminals by default on macOS and Linux; pass `--no-libssh2` to use the system ssh instead.
+  - Send cluster keystrokes to libssh2 SSH terminals.
+
+- 2026-10-01:
+  - Restore the borderless JVM main window with integrated window controls and draggable tab header.
+  - Keep unused tab header space draggable after opening terminals, including when tabs overflow.
+  - Place the connection sidebar below the header when it shares the window controls side, and let it reach the top on the opposite side.
+  - Allow window controls on either side on Linux and Windows.
+
+- 2026-09-30:
+  - Show the signed-in email and Pro status in JVM Account & Data settings.
+  - Hide cloud sync controls when the signed-in account does not include Pro.
+  - Check the current Pro entitlement before saving a cloud sync passphrase.
+  - Auto-start only the managed tunnels available to Standard accounts.
+  - Show the KaiTerm icon on the update dialog instead of the Java icon.
+  - Match the JVM launcher to its XWayland window class and native Wayland app ID.
+  - Show KaiTerm as the JVM window class in Linux window managers.
+  - Fix the JVM desktop launcher's Exec entry so desktop menus can run it.
+
+- 2026-09-29:
+  - Set the JVM app version to 1.0.0 (single source in desktopApp/build.gradle.kts, used by the package and the About panel).
+  - Check GitHub releases for updates at startup and offer Download, Skip Release, or Cancel, like the Electron app.
+  - Check exit codes for non-Password steps in startup, Fleet Runbook, sidebar, and context-menu actions without requiring password prompts.
+  - Tie hidden status markers to the command they measure so commands that request passwords finish before their status is read.
+  - Keep Password action input hidden regardless of the current remote prompt.
+  - Avoid status markers for Password-only actions.
+  - Prefix non-Password remote action commands with a space to avoid shell history where supported.
+  - Run manual Password actions immediately and resolve their named secret placeholders before sending them.
+
+- 2026-09-22:
+  - Use a crisp macOS-style squircle icon for the JVM launcher, running app, splash screen, empty workspace, and packaged app.
+  - Keep JVM right-click menus responsive when opening or leaving grouped actions.
+  - Keep macOS window maximize and restore transitions smooth.
+  - Use the operating system's own window decoration and dragging instead of a custom title bar on every platform.
+  - Fix the main window's title bar not matching dark mode when following the system appearance.
+  - Stop repeating the "Sync problem" error on every launch after a session expires; sign in again instead.
+  - Update Kotlin, Compose Multiplatform, Jewel, JediTerm, and other dependencies to their current stable releases, and remove dead code left behind by earlier fixes.
+
+- 2026-09-21:
+  - Keep macOS half-screen window tiling smooth when terminals are open.
+  - Keep JVM interface icons legible in light and dark modes.
+  - Prevent handled JVM shortcuts from also triggering conflicting macOS window actions.
+  - Reorder JVM terminal tabs by dragging them without moving the application window.
+  - Start JVM word and line selection on multi-click press and preserve those boundaries while dragging.
+
+- 2026-09-20:
+  - Remove the new-local-terminal plus button from the top bar.
+  - Keep consistent space between terminal tabs and the window edge.
+  - Show left and right controls when terminal tabs overflow the available width.
+  - Keep Linux window dragging stable with the native draggable title-bar behavior.
+  - Keep Linux and Windows window controls legible in light and dark modes.
+  - Keep right-side connection-tree controls and dividers clear of the window controls.
+  - Keep the complete title bar draggable above a right-side connection tree.
+  - Use KaiTerm window decorations for Settings, editors, managers, and terminal popouts on Linux and Windows.
+  - Keep terminal tab context menus above embedded terminal content.
+
+- 2026-09-19:
+  - Expand parent folders before revealing the focused terminal's saved connection.
+  - Select and reveal the focused terminal's saved connection in the connection tree.
+  - Order Cluster and Fleet Runbook folder and connection pickers alphabetically.
+  - Use the full dialog width for Cluster forms below macOS window controls.
+  - Add an included-only filter to Fleet Runbook host selection.
+  - Order Runbook targets and action controls consistently.
+  - Keep action commands at the end of their settings form.
+  - Keep Runbook and Cluster target lists independently scrollable.
+  - Keep action command, mode, and removal controls aligned on one line without redundant labels.
+  - Match settings dropdown widths to their fields.
+  - Show connection terminals before host probing completes and keep every cluster member visible when another member fails.
+  - Arrange split clusters in the same balanced grid used by Electron.
+  - Redistribute split terminal space evenly when a pane closes.
+  - Focus another split terminal after closing a disconnected pane so Enter and Escape remain usable.
+
+- 2026-09-18:
+  - Keep the JVM development launcher settings isolated from the regular app configuration.
+  - Filter the focused connection tree when typing.
+  - Focus the connection tree on an empty workspace so typing starts its filter.
+  - Navigate connection-tree search results in their visible order.
+  - Focus newly opened terminals so they accept input immediately.
+  - Make the active terminal tab indicator wider.
+  - Use an integrated title bar with app window controls on Linux and Windows.
+  - Match Electron terminal tab sizing, controls, and active indicator spacing.
+  - Center terminal tab labels.
+  - Use platform-appropriate Swing scrollbar styling in terminals.
+
+- 2026-09-18:
+  - Stop saved actions at the first failed command, including startup and runbook actions.
+  - Continue runbooks on remaining hosts after a host or action fails.
+  - Group runbook results into collapsed Connection and action panels.
+  - Use consistent passed, skipped, and failed colors in runbook results.
+  - Expand individual hosts to show command output and failure details.
+  - Keep captured action output visible after failures, timeouts, and cancellation.
+  - Hide internal printf probes from terminal and runbook output.
+  - Keep one shell prompt without extra blank lines after post-SSH password actions.
+  - Wait for the shell prompt before starting the next remote action command.
+  - Keep connection-tree hosts alongside their connection names.
+  - Open the complete terminal tab context menu reliably on right-click.
+  - Serialize cloud sync operations to prevent local sync request conflicts.
+  - Save settings to cloud sync without false upload/download conflicts.
+  - Preserve completed uploads when another settings change restarts automatic sync.
+  - Offer immediate Download Cloud or Upload Local recovery for sync conflicts.
+  - Clear stale sync error messages after a later automatic sync succeeds.
+  - Submit Account & Data email, verification-code, and sync-passphrase fields with Enter.
+
+- 2026-09-17:
+  - Show complete IP addresses and concise first-label hostnames in the connection tree.
+  - Render connection-tree hosts as smaller secondary text.
+  - Keep Fleet Runbook result panels collapsed until explicitly opened.
+  - Make Action Library icons visible in settings pickers.
+  - Match Electron's branded empty workspace guidance and shortcut hints.
+  - Open SFTP and FTP connections with saved credentials, protocol options, proxy jumps, and local startup actions.
+  - Encrypt locally saved passwords, private keys, passphrases, and API keys with an OS-protected JVM application key.
+  - Integrate dark macOS title bars into the main window, Settings, connection editor, and terminal popouts.
+  - Render terminal selections with the configured selection color instead of inverse white blocks.
+  - Show cloud sync state in the connection-tree footer and run manual sync from the indicator.
+  - Persist encrypted cloud sign-in, passphrase, revision, and conflict state in sync-state.json across launches.
+  - Check cloud revisions at startup and after local changes, automatically synchronizing clean histories without overwriting conflicts.
+  - Show the persisted cloud sync error in Account & Data and on the sync control.
+  - Keep downloaded cloud settings on the same clean sync baseline after restarting the JVM app.
+  - Open Account & Data when the sync control reports an error.
+  - Keep sidebar buttons clickable by removing pointer-intercepting popup tooltips and retained focus styling.
+  - Use the Compose double-click handler for title-bar maximize and restore.
+  - Add macOS Dock and Linux desktop development launchers with isolated settings and visible startup diagnostics.
+  - Edit, clone, delete, and reopen saved connections from the connection tree, including opening SSH profiles as SFTP.
+  - Create, edit, delete, and launch cluster presets as split terminals or separate tabs.
+  - Keep edited cluster membership current at launch and prevent runtime cluster input from corrupting parallel connection startup.
+  - Start, stop, auto-start, copy endpoints, and open saved SSH tunnels with automatic local port allocation.
+  - Run and stop saved Fleet Runbooks across SSH hosts with per-host status and captured output.
+  - Match the Electron startup splash artwork, logo, copy, and loading indicator while the JVM workspace starts.
+  - Render the Electron splash artwork and logo from PNG assets without opaque artifacts.
+  - Use consistent labelled add buttons and red removal icons throughout Settings collections.
+  - Keep tunnel and Fleet Runbook runner dialogs focused on running saved items with normal content insets below macOS controls.
+  - Size confirmation dialogs to their content instead of using a large fixed window.
+  - Trust HTTPS certificate authorities accepted by macOS Keychain or the Windows system store in addition to Java defaults.
+  - Keep terminal tabs clear of macOS window controls with either sidebar placement, including when collapsed.
+  - Use rounded, draggable terminal tabs aligned with macOS window controls, complete tab context actions, connection status, and a clear active-tab accent.
+  - Scroll overflowing terminal tabs while keeping the new-terminal button accessible.
+  - Give the sidebar, toolbar buttons, and tabs distinct blue-toned surfaces in light and dark mode.
+  - Keep the sidebar toggle neutral and align all collapsed sidebar buttons on the same center line.
+  - Separate popup action buttons with consistent spacing.
+  - Probe SSH, SFTP, and FTP hosts concurrently and select the first reachable host in the configured order.
+  - Expand SSH aliases when probing and select reachable jump hosts for SSH and SFTP connections.
+  - Honor numeric ports and probe timeouts saved by the settings editor.
+  - Keep connection, cluster, and tunnel launches responsive while hosts are being checked.
+  - Highlight connections and clusters immediately on press while preserving double-click to open.
+  - Add and edit complete SSH and SQL actions inside the connection editor.
+  - Include connection actions and local post-connect actions in startup action choices.
+  - Open searchable settings choices from their dropdown buttons and show selected names.
+  - Space settings action editors, command rows, and additional options consistently.
+  - Apply the selected terminal theme to selection foreground and background colors.
+  - Stop terminal text from retaining the previous theme's background color after a theme change.
+  - Apply the selected theme background to terminal text from the first rendered character.
+  - Confirm before quitting KaiTerm while terminal sessions are open.
+  - Use a compact header aligned with native macOS window controls and larger sidebar buttons.
+  - Center larger native macOS window controls in the JVM header.
+  - Resize the connection sidebar from either side and remember its width.
+  - Maximize or restore the main window by double-clicking its header.
+  - Match Fleet Runbook step, host, status, and ANSI-colored output presentation with Electron.
+  - Use consistent spacing between form labels, controls, collection cards, and settings sections.
+  - Add stable Electron-compatible folder and multi-connection context menus with open, cluster, bulk edit, rename, and delete actions.
+  - Complete cluster preset cloning and terminal and tab join, leave, and break controls.
+  - Keep dialog headings and popped-out terminal content clear of macOS window controls.
+  - Apply a consistent modern light or dark FlatLaf theme to Swing menus and embedded terminal controls.
+  - Apply Jewel's IntelliJ theme and controls consistently across the Compose desktop interface.
+  - Use the macOS Keychain trust store for secure dependency downloads from the local development launcher.
+  - Apply the configured accent color to sidebar actions and selected Settings and connection editor pages.
+  - Match Electron's outlined sidebar controls and show sync readiness with a green or red dot.
+  - Separate JVM footer action groups to match Electron.
+  - Extend the sidebar through the title bar only when it is opposite the macOS window controls.
+  - Keep the sidebar surface and divider below same-side macOS window controls.
+  - Vertically center macOS window controls in the Settings header.
+  - Keep Settings and connection and cluster editors attached above the main window and close them with Escape.
+  - Use a more compact cluster editor layout.
+  - Show cluster members as protocol plus their complete folder and connection name.
+  - Keep connection search hidden until typing begins and dismiss an empty search on blur or Escape.
+  - Use the shared compact desktop form controls throughout the JVM application.
+  - Widen connection and cluster editors and use neutral inactive toggle colors.
+  - Match Electron connection fields for credentials, SSH persistence, proxy jumps, probing, startup actions, and protocol overrides.
+  - Split connection editing into General, Connection, Startup, and action pages matching Electron.
+  - Open the selected connection or cluster with Enter and dismiss connection search.
+  - Remove redundant close controls and save instructions from integrated dialog headers.
+  - Run every configurable application shortcut across Compose and terminal focus.
+  - Apply split, search, copy, paste, and duplicate shortcuts to the focused terminal pane.
+  - Start SSH and SQL action groups collapsed and close every dialog with Escape, including manager and popup-backed Settings screens.
+  - Filter Secrets by name, slug, and username.
+  - Use labelled add controls for Settings collections and SQL statements.
+  - Use an overlapping double-plus icon for creating clusters.
+  - Focus compact dialog inputs automatically and submit valid name and password forms with Enter.
+  - List connections before child folders and add filtering plus an included-only toggle to cluster editing.
+  - Connect to MySQL and MariaDB directly or through a saved SSH connection.
+  - Configure verified TLS, trust-all TLS, CA certificate secrets, connection timeouts, and a dedicated MySQL tree color.
+  - Create SSH and MySQL connections from the connection-tree action.
+  - Show saved CA certificates in the global MySQL settings selector.
+  - Run SQL in terminal tabs with history, cursor editing, vertical results, custom delimiters, warnings, source files, output logs, and query interruption.
+  - Keep pasted SQL queries ordered while earlier queries run.
+  - Manage separate SSH and SQL actions and run SQL actions from database terminals.
+  - Hide fragmented and colorized hidden-command echoes before they enter the terminal or transcript.
   - Replace automatic reconnect with consistent Wait for key and Close immediately disconnect choices.
-  - Restore a temporarily expanded sidebar when connection search loses focus or Escape is pressed.
+  - Optionally retain terminal scrollback when reconnecting through Terminal settings.
 
-- **2026-09-08**:
-  - Connect to MySQL and MariaDB directly or through a saved SSH connection, and run SQL in an integrated results workspace.
-  - Give MySQL and MariaDB connections their own cyan connection-tree color.
-  - Keep searchable Secret and SSH connection selectors responsive after repeated use.
-  - Hide the database SSH connection selector for direct connections.
-  - Open database sessions in regular terminal tabs with splits, popouts, clusters, terminal settings, context menus, multiline statements, history, actions, and tabular MySQL-style results.
-  - Support MySQL vertical `\G` output, custom delimiters, source files, warnings, database switching, reconnecting, output logging, and query interruption.
-  - Let Ctrl+D exit MySQL from an empty prompt and show the standard reopen-or-close prompt after a session exits or a query is interrupted.
-  - Separate pinned Actions visually from Connections.
-  - Split the Action Library into SSH Actions and SQL Actions, preserving existing MySQL connection actions as SQL Actions.
-  - Extend SQL statement fields across the available action-editor width.
-  - Default new MySQL and MariaDB connections to port 3306.
-  - Make every Electron editor dropdown type-to-filter while lazily initializing large option lists to keep editors responsive.
-  - Add global and per-connection MySQL protocol settings with disabled, trust-all, and verified TLS modes plus reusable CA certificate secrets.
-  - Allow open editor dropdowns to extend beyond scroll panels instead of being clipped by their containers.
-  - Keep searchable Settings dropdowns stable across repeated clicks and show the system trust store as a normal certificate selection.
-  - Support cursor movement, Home, End, Delete, history keys, and clean Ctrl+L redraws in MySQL terminal input without printing escape sequences or duplicate prompts.
-
-- **2026-09-07**:
-  - Add the pending idle-workspace capture with its connection sidebar collapsed to the README screenshot catalog.
-
-- **2026-09-04**:
+- 2026-09-04:
+  - Paint the complete terminal surface with the selected terminal theme before the first input arrives.
   - Add `{host_rslv}` for actions that need the selected host as a resolved IP address.
   - Show pinned actions as a flat, left-aligned `folder/name` list in the expanded connection tree.
-
-- **2026-09-03**:
-  - Show the runtime cluster name as a simple compact text form without category navigation.
-  - Allocate a different dynamic SOCKS port for every terminal session, including repeated opens of the same connection.
-  - Hide pinned actions while searching the connection tree so keyboard navigation cycles through connections and clusters only.
-
-- **2026-08-31**:
-  - Prevent multiple KaiTerm processes from invalidating the same rotating sync session during simultaneous refreshes.
-  - Replace the compressed connection search field with a search button while the connection tree is collapsed.
-  - Remove the stray vertical separator beside collapsed sidebar actions.
-  - Launch the macOS development app natively on Apple Silicon and keep its cached Electron runtime architecture-specific.
-
-- **2026-08-27**:
-  - Preserve a selected terminal newline consistently across native, shortcut, and context-menu copy.
-  - Remove the extra terminal column reserved beside the scrollbar.
-
-- **2026-08-26**:
-  - Add Text, Hidden, and password-prompt-only modes to each remote Action Library command.
-  - Show a safe placeholder when an Action Library password is sent.
-
-- **2026-08-25**:
-  - Wrap connection-tree keyboard selection between the first and last visible items.
-  - Reload the latest saved connection settings before automatically or manually reconnecting a terminal.
-  - Move a terminal out of a split panel into its own tab from the terminal context menu.
-  - Resize horizontal and vertical split terminal panels by dragging their separators.
-  - Clear connection search when focus leaves the connections tree.
-  - Return scrolled terminal output to the prompt when typing if Scroll on keystroke is enabled.
-  - Avoid an uncaught resize error when a terminal exits during a window layout update.
-  - Download connections and plaintext credentials as an importable CSV file.
-
-- **2026-08-24**:
-  - Show sidebar actions vertically in a consistent order when the connection tree is collapsed.
-
-- **2026-08-21**:
-  - Keep terminal text clear of the scrollbar with the reserved space on its inside edge.
-  - Search terminal output from the terminal context menu or an editable shortcut with highlighted previous and next matches.
-  - Pause incoming terminal output while search is open and display it when search closes.
-
-## v2.2.2
-
-- **2026-08-20**:
-  - Organize the Action Library into folders with searchable actions and clearer command editing.
-  - Let Fleet Runbooks select saved Action Library actions for each fleet workflow.
-  - Keep Runbooks before Tunnels in the Automation settings section.
-  - Copy the terminal selection reliably from the terminal context menu on macOS.
-
-- **2026-08-17**:
-  - Keep the final terminal column visible instead of letting the scrollbar cover it.
-
-- **2026-08-13**:
-  - Add a collapsible connection tree with cached collapsed state, a mirrored right-side toggle, and temporary search expansion that collapses again after opening a connection.
-  - Add an editable global shortcut for collapsing or expanding the connection tree, defaulting to Ctrl/Cmd+Alt+B.
-
-## v2.2.1
-
-- **2026-08-11**:
-  - Refresh the README screenshot catalog for the current terminal context menu.
-  - List every active runtime cluster in terminal Cluster menus and let all members leave a cluster without closing their connections.
-  - Close all failed or disconnected connections from terminal context menus or the macOS File menu.
-  - Keep the macOS Edit menu focused on KaiTerm's standard editing commands.
-
-## v2.2.0
-
-- **2026-08-10**:
-  - Require matching password and confirmation fields before exporting a backup.
-  - Show backup password validation inside the export dialog instead of behind it.
-
-- **2026-08-07**:
-  - Move Show connection type and Show connection host to the Appearance panel, after the Accent color setting, instead of the Connections panel.
-  - Move Theme after Color mode in the Appearance panel.
-  - Show the shell's prompt between and after startup/post-connect actions again; the hidden exit-status probe was gluing the shell's freshly redrawn prompt onto the same line as its own invisible marker, which discarded it during cleanup and left every following action with no prompt shown before or after it.
-  - Redraw a fresh shell prompt when the shell's own prompt text still can't be captured (for example when the last action is `reset` or `clear`), instead of leaving a blank screen.
-- **2026-08-06**:
-  - Add a global connection-list setting that optionally shows up to 15 characters of each host after its connection name.
-  - Resolve only the active connection protocol's settings so SSH, SFTP, and FTP options cannot affect one another.
-  - Identify failed startup actions by name and show the exact failed command with its exit error.
-  - Wait for hidden remote exit-status markers instead of mistaking the probe's echoed command for completion and reporting a null status.
-  - Preserve the Windows and Linux native title-bar icon/menu slot while keeping the custom title-bar tools and native window-controls overlay.
-  - Require a recorded common revision before automatic sync can download or upload existing cloud settings, leaving unrelated histories for explicit Download Cloud or Upload Local resolution.
-  - Check revision ancestry before startup sync instead of unconditionally replacing local settings with the cloud copy.
-  - Serialize expired-session recovery and reuse a token refreshed by another sync request without clearing saved account or passphrase details on errors.
-  - Make Upload Local always replace the cloud document, including when only the sync passphrase is being replaced.
-  - Make AI follow-up responses concise and stop repeating commands after the user approves them.
-  - Run approved AI commands without interactive input or pagers so they cannot become trapped in Less, More, or confirmation prompts.
-  - Show remote discovery progress and block AI message entry until discovery finishes.
-  - Hide AI discovery output behind a concise completion message and use invisible action and runbook status probes.
-  - Stop importing obsolete renamed connection-action settings.
-  - Add None, screen, and tmux connection persistence modes with a separate named remote session for every terminal tab.
-  - Reattach persistent sessions after SSH reconnects and terminate only the matching remote session when its terminal is explicitly closed.
-  - Always request a remote pseudo-terminal for tmux and screen connections.
-  - Isolate each tmux terminal on its own server socket, avoiding failures caused by an incompatible existing tmux server.
-  - Start tmux and screen directly as the SSH remote command without an extra login-shell step.
-  - Preserve the complete terminal identifier in persistent session names.
-  - Keep verbose SSH diagnostics from being mistaken for the connection-ready signal and deleting temporary identity files before authentication completes.
-  - Apply configured terminal scrollback correctly, treating -1 as unlimited and 0 as disabled.
-  - Select the first connection search result automatically so Enter opens it immediately.
-  - Add optional action folders and organize terminal context-menu actions into matching nested submenus.
-  - Rename action settings from right-click menu to context menu.
-  - Open nested action folders one submenu at a time without horizontal menu scrolling.
-  - Make empty tab-bar space draggable and restore native double-click maximize or restore behavior.
-  - Move popped-out tabs completely out of the main window, register and load bundled fonts before recreating xterm in the destination window, keep the context menu in the popout, remove the redundant reattach header, and intercept the native close button before confirming and terminating the tab.
-
-- **2026-08-03**:
-  - Keep Save, Download Cloud, and Upload Local visible beside one sync passphrase field without a separate action panel; Save stores the passphrase and attempts a normal sync, while manual upload and download become available only after saving and always use the stored passphrase.
-
-## v2.1.0
-
-- **2026-07-31**: Point cloud sync at the new api.kaiterm.dev endpoint.
-
-- **2026-07-30** : Remove the deprecated alternate terminal transport, its settings, executable path, import handling, and launch code.
-
-- **2026-07-30**:
-  - Keep exported backup settings readable while requiring a password and encrypting every password, private key, passphrase, and API key field.
-  - Refuse saved secrets when Linux Electron falls back to insecure basic-text storage.
-  - Remove stale temporary embedded private-key files and retain Keeper master passwords only until the next Keeper lookup.
-  - Keep the sidebar sync control visible and open Account & Data when sync is not configured, while syncing immediately and showing status when it is configured.
-  - Order sidebar footer controls as one complete sequence that reverses consistently with right-side placement.
-
-- **2026-07-29**:
-  - Align background cloud-sync polling with mobile at five-minute intervals.
-
-- **2026-07-29**:
-  - Change Fleet Runbooks to open each target once in a hidden initial Connection step and skip configured connection actions for those automated opens.
-  - Reuse the same PTY sessions for every following Fleet Runbook step.
-  - Send Fleet Runbook commands with a leading space to suppress shell history on compatible systems while keeping runbook status probes out of command output.
-  - Show Finished for successful Fleet Runbook steps with no output.
-  - Show the same Fleet Runbook passed, skipped, and failed result counters and status colors as mobile.
-  - Use the global connection stagger for Fleet Runbooks instead of per-runbook concurrency.
-  - Stop the whole Fleet Runbook on any connection or command failure when Fail on single error is enabled.
-  - Prompt immediately when encrypted cloud sync detects a conflict.
-  - Skip cloud uploads when saved settings have not changed.
-  - Poll for remote cloud changes while the app is open or regains focus or network access.
-  - Automatically download newer cloud settings when this device is clean.
-  - Let users choose whether to download the cloud configuration or upload the current local configuration when both sides changed.
-  - Let KaiTerm start after Pro is removed even when existing local settings still contain Standard-limited Pro features.
-  - Keep remote action exit-code probes from being sent into password, passphrase, or confirmation prompts.
-  - Suppress hidden remote status probes and AI discovery commands from compatible shell history.
-  - Keep the Account & Data email field read-only after a verification code is sent, with only code entry and a cancel action until the user verifies or restarts the email step.
-- **2026-07-28**:
-  - Hide the terminal right-click Actions submenu for SFTP and FTP connections, where terminal actions cannot run.
-  - Add a consistent tab context menu for recursively nesting complete tabs and their existing split layouts horizontally or vertically.
-  - Keep terminal-to-tab splitting limited to nesting the selected tab beside only the clicked terminal without disturbing its surrounding split layout.
-  - Exclude the current tab from split candidates.
-  - Create or join runtime clusters with every terminal in the tab.
-  - Support popping out and closing the complete tab.
-  - Make middle-click close terminal tabs consistently across Linux, Windows, and macOS.
-- **2026-07-26**:
-  - Make Open local terminal default to Ctrl/Cmd+Shift+T.
-  - Preserve customized editable shortcut bindings instead of restoring Open local terminal to Ctrl/Cmd+T after Settings is saved or the app is reopened.
-- **2026-07-24**:
-  - Make Remote actions send each line with the terminal's normal Enter input.
-  - Wait for a prompt only when another Remote action line follows across the complete ordered action sequence.
-  - Clear stale prompt state between Remote action lines.
-  - Return immediately after the final Remote action line so passwords, confirmations, and long-running commands do not incur duplicate prompts, extra output, or completion timeouts.
-  - Consistently name the containing feature Actions while reserving command for its individual lines.
-  - Identify protocol-specific fields in the bulk connection editor while keeping concise labels in individual connection panels.
-  - Move the local shell program from Terminal into Programs and reorder the panel by dependency.
-  - Group local shell, OpenSSH, connection-client, and external secret-provider programs under clear in-panel headings.
-  - Let connection editors create, securely save, refresh, and immediately select a new reusable global secret from a compact application-styled dialog beside an aligned Secret selector control.
-- **2026-07-23**:
-  - Make release builds explicitly dispatched so tag pushes no longer start CI automatically.
-  - Launch tagged GitHub release builds through GitHub CLI.
-  - Let manual releases proceed without waiting for an action to be stopped.
-
-## v2.0.0
-
-- **2026-07-23** : Make manual and GitHub release changelog versioning portable across macOS and Linux instead of relying on incompatible in-place `sed` syntax.
-- **2026-07-23** : Add a `--size` launch switch with optional `WIDTHxHEIGHT` dimensions to bypass cached window size and maximized state for one run without replacing the saved window bounds.
-- **2026-07-23** : Consolidate the interface into a premium visual system with shared spacing, radius, sizing, focus, typography, and motion tokens plus uniformly sized color controls with left-aligned labels, right-aligned swatches, and a stable two-row tree palette; distinguish primary and secondary tree selections with a stable selected-count indicator; add Shift plus arrow range selection and empty-tree clearing; let folder and multi-connection context menus open every connection in a balanced split or separate tabs either independently or as a runtime cluster, with connection totals shown on both choices and launch order consistently sorted by folder then connection name; make the connection tree pointer- and keyboard-resizable with its preferred width stored in the local cache, the search field kept aligned to the live sidebar width, and a dynamic minimum that prevents visible footer actions from crowding or clipping; make overflowing terminal tabs horizontally scrollable with conditional navigation buttons and automatic active-tab reveal; keep connection indicators tied to connection state while reserving bell highlighting for genuinely inactive tab panels; stabilize dialog validation and action areas; refine connection, folder, and terminal context-menu hierarchy; standardize all desktop actions as flat gradient-free controls with consistent compact and standard sizing, borders, separators, hover and pressed states, and clear primary and destructive colors; improve narrow-window behavior with reduced-motion support; and refresh the README and complete 30-image public screenshot catalog for the current interface.
-- **2026-07-22** : Show a large active-display-centered splash combining an animated tapered dot-field backdrop, the KaiTerm logo, and a spinner while automatic cloud sync and settings loading finish, keep the main window hidden until the fully updated workspace is ready, and provide an `npm run splashscreen` command for persistent splash previews.
-- **2026-07-22** : Add Ctrl/Cmd toggle selection and Shift range selection for saved connections, with right-click actions to open, bulk edit, or delete the selected connections together, and consistently separate destructive folder actions in context menus.
-- **2026-07-22** : Place selected-authentication-only controls at the top of global SSH/SFTP settings and directly below the per-connection global-override control, and clarify their labels throughout.
-- **2026-07-22** : Replace the traditional window title bar with a draggable inset pill-style terminal-tab bar with polished close controls and a title-centered active accent, detect the native window-control side and geometry for balanced spacing, keep search persistent in the title bar when controls are left while using type-to-reveal search above the tree when controls are right, preserve type-to-search while connection rows are focused, and group application, creation, operational, sync, and local-terminal actions in the sidebar footer.
-- **2026-07-21** : Build one universal macOS DMG and ZIP containing native Apple silicon and Intel binaries, verify both architecture slices in Electron and node-pty during CI, and publish universal latest-release aliases and update-feed entries.
-- **2026-07-21** : Add native macOS application-menu entries for opening Settings with Cmd+, and starting a local terminal with Cmd+T, align and migrate the editable local-terminal shortcut to the same binding, and support menu actions when they recreate a closed main window.
-- **2026-07-21** : Migrate legacy Ctrl-based application shortcuts to the platform-neutral primary modifier so they consistently use Command on macOS and Ctrl on Linux and Windows, display the macOS Option modifier by its native name, recognize Option-modified letter and number keys reliably, leave unassigned Ctrl combinations available to terminal applications, and remove the duplicate shortcut reference table from Settings.
-- **2026-07-21** : Refine the application visual system with a purposeful terminal empty state, grouped sidebar actions, color-coded right-aligned connection-type labels instead of status-like colored dots, stronger typography and surface hierarchy, compact card-like operational rows, independently scrollable grouped Settings navigation, global type-to-search outside interactive controls, and more polished dialog and control styling across dark and light modes; keep long connection trees constrained to the sidebar and independently scrollable.
-- **2026-07-19** : Expand Standard by making CSV connection import, saved clusters, runtime clusters, cluster colors, connection stagger, and basic SSH/SFTP proxy jumps free, while allowing two saved managed tunnels and two Fleet Runbooks for Standard users, restricting Standard managed-tunnel endpoint opening to the first two saved tunnels, rejecting comma-separated host lists unless KaiTerm Pro is active, restoring Pro backups on Standard by keeping each connection's first host, removing unused main-process bindings, and keeping unlimited tunnels, unlimited runbooks, unique SOCKS proxy ports, host probing, host failover, startup automation, AI, and encrypted sync in KaiTerm Pro.
-- **2026-07-19** : Make active and selected interface states easier to distinguish by adding accent markers to the current terminal tab, selected connection, settings category, dropdown selection, and connection-tree drop targets, center terminal tab titles in wider tabs between fixed tab controls, clear the connection-tree selection while a local terminal is active, and add an Appearance setting for choosing the app accent color.
-- **2026-07-18** : Add KaiTerm Pro AI mode, enforced at both UI and IPC boundaries, for saved SSH connections with an interactive terminal and connection-scoped OpenAI, Grok, Gemini, or Ollama chat, optional per-connection AI context that identifies likely server roles and services while requiring runtime verification, user-approved per-connection AI memories that are proposed from stable non-secret host facts, saved through settings with redaction and caps, synced with the connection, and included in future AI sessions as stale-until-verified context, one-shot terminal-selection context for requests such as "analyze this" with visible inclusion counts, truncation, secret redaction, and untrusted-output handling, shell-prompt verification plus alternate-screen detection that prevents approved commands from being sent into Less, Vim, Nano, `top`, or another active program and keeps blocked proposals retryable, completion-timeout-free approved commands that may run for hours with live output, bounded analysis capture, a repeatable Ctrl+C Abort control, and explicit aborted results, multiple named AI configurations with independently encrypted hosted-provider API keys, refreshable OpenAI and xAI models loaded from each provider's `GET /v1/models` endpoint with actionable provider error details, compatible Gemini models loaded from Google's model API, in-app OpenAI Platform and Google AI Studio API key setup guidance, or Ollama models selected from `ollama list`, an Open with AI connection submenu for choosing the required configuration per terminal, optional per-configuration Bash history suppression that safely enables `HISTCONTROL=ignorespace` and prefixes approved AI commands with a space, schema-enforced Ollama replies that consistently separate messages from command approval cards without exposing internal tool markup, automatic discovery of `/etc/os-release`, `lsb_release`, the current user and groups, PATH, sudo availability, and the kernel, command availability checks that avoid invented absolute executable paths, explicit Run or Skip approval for every AI-proposed command across providers, visible command execution, automatic output analysis and follow-up proposals, API key protection through local secure storage plus the same passphrase encryption used by cloud sync and encrypted backups, risk labels, sensitive-output redaction, and isolation from terminal splits, duplication, pop-outs, and clusters.
-- **2026-07-17** : Store editable application shortcuts with a platform-neutral primary modifier so synced shortcuts use Ctrl on Linux and Windows or Command on macOS, display macOS shortcuts as Cmd in Settings, and use the same primary modifier for terminal link opening.
-- **2026-07-17** : Sort Fleet Runbooks by name in settings and the operational manager, and render basic ANSI terminal colors in captured runbook output instead of showing escape codes while safely ignoring unsupported color modes.
-- **2026-07-17** : Add external secret references for Bitwarden CLI, Keeper Commander CLI, and system SSH-agent identities, with provider-backed login password and login key secrets resolved at connection, tunnel, runbook, proxy-jump, and command-template runtime without storing the resolved values in KaiTerm settings, plus on-demand Bitwarden and Keeper unlock prompts with Enter to unlock, Escape to cancel, and a disabled spinning Unlock state while provider CLIs respond, keeping provider session values only in memory.
-- **2026-07-16** : Remember expanded and collapsed connection-tree folders, including Clusters, in the local cache while keeping filtered search results temporarily expanded, and add in-app recursive folder rename and drag-and-drop moves that preserve subfolders, cluster and runbook targets, and cached tree state with confirmation before merging sibling folders.
-- **2026-07-16** : Make searchable selection fields match case-insensitive text within visible labels only, excluding hidden values and unrelated fuzzy matches.
-- **2026-07-16** : Keep ordinary terminal URL clicks inert and open HTTP or HTTPS links in the default system browser only when Ctrl is held while clicking.
-- **2026-07-16** : Organize application internals into focused modules for settings backups, SSH key handling, release updates and external links, connection CSV import and export, AI provider discovery, HTTP utilities and IPC handlers, terminal context menus, reusable enhanced selects, and shared keyboard shortcut processing; remove obsolete connection-action and direct sync IPC paths, unused preload APIs and exports, duplicate normalizers, and trivial pass-through helpers.
-- **2026-07-16** : Replace field-level backup encryption with two explicit formats: warned plaintext JSON containing portable secret values, or a versioned whole-file AES-256-GCM envelope protected only by the entered backup password; Restore now inspects the selected file before prompting and never reads, replaces, or uploads with the sync passphrase.
-- **2026-07-16** : Standardize configuration checkbox labels so their text consistently appears before the checkbox horizontally or above it in stacked panel layouts.
-- **2026-07-16** : Allow global and per-connection SSH actions to be hidden from the terminal right-click menu while remaining available to startup automation, with existing actions visible by default.
-- **2026-07-16** : Add stable category button IDs to Settings and other categorized editors for reliable interface automation and targeting, and refresh the README with the complete current numbered screenshot set and Unreleased feature coverage.
-
-## v1.1.0
-
-- **2026-07-15** : Improve tree context menus by adding new connections directly from a folder with the selected folder prepopulated and consistently styling cluster deletion as a destructive action.
-- **2026-07-15** : Add encrypted sync recovery that can replace cloud settings from the most up-to-date computer, guide other computers to download with the new passphrase, recover an unreadable machine-local sign-in without changing local configuration, warn with repair instructions when Settings contains an unreadable secret, use value snapshots to require genuinely changed settings to be saved before opening Account & Data, show a subtle green sync status dot when healthy or red when an error needs attention, and keep explicit uploads available when background sync is disabled.
-- **2026-07-16** : Add Fleet Runbooks as a KaiTerm Pro feature with name-only workflow labeling and editable definitions in Settings, unnamed one-line command steps, and a read-only standalone operational manager for running and stopping saved workflows across path-sorted SSH host or recursive folder targets, with dynamic folder membership shared by cluster configuration, a full-width stacked searchable multi-select, controlled concurrency, step-boundary stop-on-failure or failed-host exclusion when continuing, skipped transport failures, cooperative cancellation, a run-focused output view, nested collapsible command and host results, compact add and delete controls beside their related settings, persistent passed, skipped, and failed counts with status colors, captured output, and live per-host status.
-- **2026-07-15** : Add SSH tunnel management as a KaiTerm Pro feature with editable definitions in Settings and a read-only standalone operational manager for starting and stopping saved tunnels, plus a subtle green status dot while tunnels are active, path-sorted searchable host selection, collapsible status panels, compact add and delete controls beside their related settings, aligned fields, local, remote, and dynamic forwarding, automatic local-port allocation, optional startup with KaiTerm, endpoint copying, and automatic opening of configured URLs after forwarding is ready.
-- **2026-07-14** : Restore GitHub release update detection and expand the update prompt with Cancel, Download, and persistent Skip Release choices.
-- **2026-07-14** : Simplify application internals by removing unused code and redundant pass-through helpers.
-
-## v1.0.1
-
-- **2026-07-14** : Added read update metadata from the public GitHub Releases API so the app can point users directly at release assets.
-- **2026-07-14** : Generate platform update feed files during the public release workflow for Linux, macOS, Windows setup, and Windows portable artifacts.
-- **2026-07-14** : Allow trusted update download links from the public GitHub release page and release assets.
-- **2026-07-14** : Improve update detection so a newer version is only marked installable when a compatible package is available for the current platform.
-- **2026-07-14** : Route fallback update downloads to the product download page when no matching artifact is listed.
-- **2026-07-14** : Fix import the shared action execution normalizer where remote and local terminal actions are run.
-
-## v1.0.0
-
-- **2026-07-13** : Initial KaiTerm desktop app for managing SSH-heavy workflows in an Electron terminal workspace.
-- **2026-07-13** : Connection tree with folders, search, keyboard navigation, protocol colors, context menus, cloning, editing, and deletion.
-- **2026-07-13** : xterm.js workspace with tabs, horizontal and vertical splits, duplicate terminals, tab reordering, pop-out windows, copy/paste, reset, clear, and exit actions.
-- **2026-07-13** : Reusable secrets for passwords, login passwords, and login keys, with encrypted local storage and file loading for private keys.
-- **2026-07-13** : Global and per-connection command actions, including remote actions, local actions, template variables, and editable shortcuts.
-- **2026-07-13** : Appearance settings for app color mode, terminal themes, fonts, cursor shape, scrollback, bell, sidebar placement, and visible scrollbars.
-- **2026-07-13** : Local backup export and restore tools with passphrase validation.
-- **2026-07-13** : KaiTerm Pro features including saved clusters, runtime clusters, startup automation, before-connect local actions, proxy jumps, SOCKS proxy allocation, port probing, comma-separated host failover, encrypted cloud sync, and CSV import.
-- **2026-07-13** : Account and sync support with email verification, passkeys, recovery codes, rotating tokens, conflict reporting, automatic pull on startup, and automatic push after settings changes.
-- **2026-07-13** : Public build workflow for Linux, macOS, Windows installer, and Windows portable release artifacts.
+  - Expand connection variables before sending pinned action commands to the active terminal.
+  - Resize terminal surfaces to fill their workspace and update the PTY dimensions with the window.
+  - Show terminal close, error, and cluster prompts above the Swing terminal surface.
+  - Switch the visible terminal surface whenever the active tab changes.
+  - Show a simple cluster-name input when creating runtime clusters.
+  - Reserve a different dynamic SOCKS port for every terminal session, including repeated and split opens of the same connection.
+  - Hide pinned actions during connection-tree searches and wrap Up/Down navigation through matching connections and clusters.
+  - Run SSH pre-connect actions with Electron-compatible variables, secret placeholders, platform filtering, and stop-on-failure behavior.
+  - Run mixed local and remote SSH post-connect actions in saved order, preserving text, hidden, and password command modes while waiting between commands.
+  - Give repeated and split persistent SSH connections independent screen or tmux session names.
+- 2026-09-02:
+  - Added JVM SSH terminal connections using OpenSSH with saved password, private-key, key-passphrase and agent authentication; global and per-connection overrides; compression, X11 and agent forwarding; PTY, verbosity, timeout, arbitrary options, proxy jump, host failover probing, unique SOCKS proxy and screen/tmux persistence.
+  - Added SSH before/after startup actions, automatic credential prompt responses, same-connection reconnect and split behavior, double-click connection launch, and visible launch errors.
+- 2026-09-01:
+  - Applied terminal font, text size, colour theme, cursor, scrollback, scroll-on-keystroke, scrollbar, and bell preferences to JVM terminal sessions.
+  - Refined JVM fields, tree rows, icons, menus, sidebar actions, internal padding, typography, and toggles for desktop-appropriate density.
+  - Moved compact field labels outside their input outlines so labels never cover entered values.
+  - Fixed encrypted Secrets entries failing to expand in JVM Settings while preserving untouched saved values.
+  - Matched Electron secret fields and local versus remote Action Library behavior, including platform multi-selection.
+  - Added Escape-to-close for JVM Settings and restored normal window stacking.
+  - Fixed local terminals failing to render when unlimited scrollback is selected.
+  - Kept Settings above active terminal surfaces in its own desktop window.
+- 2026-08-31: Added the native JVM desktop application with Electron-compatible persistence, cache and window geometry; theme-aware neutral surfaces and native dialogs; compact global settings with complete Secrets, foldered Action Library, Runbooks, Tunnels, AI, account, backup, sync, and CSV editors; per-command text, hidden, and password modes; a loose-connections-first collapsible folder tree with saved cluster presets; bundled themes and icons; and persistent JediTerm and Pty4J terminal tabs with a single application context menu, reliable disconnect strategies, terminal and tab menus, nested splits, unsplit, popout, and reattach.
