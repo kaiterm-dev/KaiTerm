@@ -1,15 +1,50 @@
 # Changelog
 
-## v3.6.0
+## v4.0.0
 
-- 2026-10-07:
+- **2026-10-08**:
+  - Type characters made with the Option key on macOS, such as # with Option+3 on a UK keyboard, instead of sending Escape sequences.
+  - Apply a changed terminal font family or size to every open terminal right away, as the theme already was.
+  - Ask "Discard changes?" when Esc closes a connection, cluster, folder rename, secret, bulk edit or Settings dialog with unsaved changes; close at once when nothing changed.
+  - Stop Shift-only and Alt-only shortcuts from firing while a text field has focus.
+  - Stop the sidebar taking focus back after a click elsewhere while the connection filter is open.
+  - Add a "Don't ask again" checkbox to the quit confirmation, shared by Cmd+Q and closing the window.
+  - Add Select All to the Edit menu for the terminal.
+  - Keep running an action's commands after a Password step opens an interactive shell such as su -: the next command is sent once the new shell's prompt appears, instead of waiting forever for the first command's exit status.
+  - Space out the sidebar action buttons when they are laid out horizontally.
+  - Send terminal input to libssh2 sessions in order through one writer, so a paste can no longer lose or reorder characters (such as the first letter of a line).
+  - Hide private keys in the secrets editor and the connection editor until revealed.
+  - Show or hide every password, passphrase, and private key field with an eye icon button.
+  - Skip the connection port probe when a connection has a single host, which fixes intermittent "Unable to exchange encryption keys" errors on servers using socket-activated sshd.
+  - Wait for the connection stagger after a successful connection port probe before connecting, so a socket-activated sshd has time to finish the probe's connection; no wait when the stagger is 0.
+  - Rename the stagger setting to "Connections, commands, and port probe stagger".
+  - Keep typed characters in the sidebar type-ahead search instead of replacing the query with the last one.
+  - Let Shift+Arrow and Alt+E reach the shell when a terminal has focus, since only shortcuts with Ctrl or Cmd now fire from a terminal.
+  - Let copy, Ctrl+C, selection, and scroll keys work in a disconnected terminal: only Enter and Esc answer the restart or close prompt.
+  - Add an Edit menu with Copy and Paste for the terminal (Cmd+Shift+C and Cmd+Shift+V on macOS, Ctrl+Shift+C and Ctrl+Shift+V elsewhere).
+  - Do not send an AI chat message with Enter while an input method composition is active.
+  - Read the default keyboard shortcuts from the shared library, so they match the other apps.
+
+- **2026-10-07**:
+  - Restarting a failed or closed connection with Enter reads the saved connection again, so settings edited in the meantime apply, while the terminal history is kept.
+  - Fix the "Index 0 out of bounds for length 0" error when a popped-out tab is reattached: each window now hosts the terminal in its own panel.
+  - On macOS, stop the system dragging the whole window from the tab bar, so dragging a tab reorders it (or pops it out) and a second double-click on the bar restores a maximized window.
+  - Verify the downloaded JetBrains Runtime against JetBrains' SHA-512 checksum before unpacking it.
+  - Fix a connection's port and other number settings not taking effect: the editors stored them as 22.0, which the shared connection code read as missing and replaced with the default. Whole numbers are now stored as integers and shown without .0.
+  - Pop a tab out into its own window by dragging it up or down away from the tab bar.
+  - When the AI assistant says a command needs approval but never proposes one, ask it once for the real proposal so the approval card appears.
+  - Say whether an AI request never connected or was sent but got no reply, with the times, instead of one generic timeout message.
   - Save the connection editor, Settings, cluster editor, bulk edit, and New secret dialogs when Enter is pressed in a single-line text field.
   - Download the JetBrains Runtime 25 SDK on macOS and Windows too, so `build.sh` no longer fails there with "Cannot find a Java installation ... vendor JetBrains".
 
-- 2026-10-06:
+- **2026-10-06**:
   - Open and close tree and terminal context menus with the `menu` and `close-menu` automation commands.
-- 2026-10-05:
-  - Download a JetBrains Runtime 25 SDK on Linux when the build needs one, or use `JBR_HOME`, so `build.sh` and `start.sh` no longer fail with "Cannot find a Java installation ... vendor JetBrains".
+
+- **2026-10-07**:
+  - Keep the connection filter and sidebar open when you click a filtered connection, so it can be double-clicked to open.
+
+- **2026-10-05**:
+  - Verify the downloaded JetBrains Runtime against JetBrains' SHA-512 checksum.
   - Give libssh2 terminals the window's real size as soon as they connect, instead of 100×30 until the next manual resize, so vim and other full-screen programs start at the right size.
   - Run Fleet Runbooks with the shared engine (same order, statuses, skipping and cancellation as before).
   - No visible change: the desktop's tunnel proxy and port-forward code now has a shared counterpart that Android uses.
@@ -51,7 +86,7 @@
   - Fill in a new secret's slug as its label is typed (until the slug is edited by hand).
   - Add new secrets at the top of the Secrets list, from both the Secrets settings and a connection's "New secret".
 
-- 2026-10-03:
+- **2026-10-03**:
   - Stop Shift from opening connection search with a blank character when Shift+clicking a range in the connection tree.
   - Open dropdown menus at exactly the width of their field instead of extending past both edges.
   - Select the existing query when the connection search or terminal search shortcut is used again.
@@ -60,7 +95,8 @@
   - Open fixed-choice dropdowns on any click without a text cursor, and list their choices in their natural order, such as Text, Hidden, Password for action commands.
   - Show each action's folder in the connection Startup lists and sort the action choices alphabetically.
   - Add opt-in local automation with `--automation`, and send automation commands from the command line with `--automate`.
-- 2026-10-02:
+
+- **2026-10-02**:
   - Stop highlighting URLs in terminals; Ctrl/Cmd+click still opens them.
   - Post-connection actions: recognise `>` and `%` (and a bare `$`, `#`, `>` or `%`) as shell prompts and any line mentioning a password or passphrase followed by a colon as a password prompt (shared with Android).
   - Make Password steps wait for such a prompt before sending, instead of firing as soon as the previous command was echoed; fail the action if none appears within 30 seconds, like Android, iOS and Electron.
@@ -77,10 +113,10 @@
   - Add more space after the secret list.
   - Add bottom padding below the last field of expanded settings list items such as secrets.
 
-- 2026-10-02:
+- **2026-10-02**:
   - Add "Swap split panels" and "Switch split direction" to the terminal and tab context menus and the Terminal menu: a terminal acts on its innermost split, a tab on its outermost.
 
-- 2026-10-01:
+- **2026-10-01**:
   - Add an "Extra word separators" terminal setting controlling where a double-click selection stops (default `=;`).
   - On Linux, selecting text fills the X11 primary selection and middle-click pastes it, without touching the Ctrl+C / Ctrl+V clipboard.
   - Add build-windows.ps1, which installs the Windows build dependencies (MSYS2, JDK 25, WiX), builds the libssh2 libraries and packages the app.
@@ -88,13 +124,13 @@
   - Use the built-in libssh2 client for SSH terminals by default on macOS and Linux; pass `--no-libssh2` to use the system ssh instead.
   - Send cluster keystrokes to libssh2 SSH terminals.
 
-- 2026-10-01:
+- **2026-10-01**:
   - Restore the borderless JVM main window with integrated window controls and draggable tab header.
   - Keep unused tab header space draggable after opening terminals, including when tabs overflow.
   - Place the connection sidebar below the header when it shares the window controls side, and let it reach the top on the opposite side.
   - Allow window controls on either side on Linux and Windows.
 
-- 2026-09-30:
+- **2026-09-30**:
   - Show the signed-in email and Pro status in JVM Account & Data settings.
   - Hide cloud sync controls when the signed-in account does not include Pro.
   - Check the current Pro entitlement before saving a cloud sync passphrase.
@@ -104,7 +140,7 @@
   - Show KaiTerm as the JVM window class in Linux window managers.
   - Fix the JVM desktop launcher's Exec entry so desktop menus can run it.
 
-- 2026-09-29:
+- **2026-09-29**:
   - Set the JVM app version to 1.0.0 (single source in desktopApp/build.gradle.kts, used by the package and the About panel).
   - Check GitHub releases for updates at startup and offer Download, Skip Release, or Cancel, like the Electron app.
   - Check exit codes for non-Password steps in startup, Fleet Runbook, sidebar, and context-menu actions without requiring password prompts.
@@ -114,7 +150,7 @@
   - Prefix non-Password remote action commands with a space to avoid shell history where supported.
   - Run manual Password actions immediately and resolve their named secret placeholders before sending them.
 
-- 2026-09-22:
+- **2026-09-22**:
   - Use a crisp macOS-style squircle icon for the JVM launcher, running app, splash screen, empty workspace, and packaged app.
   - Keep JVM right-click menus responsive when opening or leaving grouped actions.
   - Keep macOS window maximize and restore transitions smooth.
@@ -123,14 +159,14 @@
   - Stop repeating the "Sync problem" error on every launch after a session expires; sign in again instead.
   - Update Kotlin, Compose Multiplatform, Jewel, JediTerm, and other dependencies to their current stable releases, and remove dead code left behind by earlier fixes.
 
-- 2026-09-21:
+- **2026-09-21**:
   - Keep macOS half-screen window tiling smooth when terminals are open.
   - Keep JVM interface icons legible in light and dark modes.
   - Prevent handled JVM shortcuts from also triggering conflicting macOS window actions.
   - Reorder JVM terminal tabs by dragging them without moving the application window.
   - Start JVM word and line selection on multi-click press and preserve those boundaries while dragging.
 
-- 2026-09-20:
+- **2026-09-20**:
   - Remove the new-local-terminal plus button from the top bar.
   - Keep consistent space between terminal tabs and the window edge.
   - Show left and right controls when terminal tabs overflow the available width.
@@ -141,7 +177,7 @@
   - Use KaiTerm window decorations for Settings, editors, managers, and terminal popouts on Linux and Windows.
   - Keep terminal tab context menus above embedded terminal content.
 
-- 2026-09-19:
+- **2026-09-19**:
   - Expand parent folders before revealing the focused terminal's saved connection.
   - Select and reveal the focused terminal's saved connection in the connection tree.
   - Order Cluster and Fleet Runbook folder and connection pickers alphabetically.
@@ -157,7 +193,7 @@
   - Redistribute split terminal space evenly when a pane closes.
   - Focus another split terminal after closing a disconnected pane so Enter and Escape remain usable.
 
-- 2026-09-18:
+- **2026-09-18**:
   - Keep the JVM development launcher settings isolated from the regular app configuration.
   - Filter the focused connection tree when typing.
   - Focus the connection tree on an empty workspace so typing starts its filter.
@@ -169,7 +205,7 @@
   - Center terminal tab labels.
   - Use platform-appropriate Swing scrollbar styling in terminals.
 
-- 2026-09-18:
+- **2026-09-18**:
   - Stop saved actions at the first failed command, including startup and runbook actions.
   - Continue runbooks on remaining hosts after a host or action fails.
   - Group runbook results into collapsed Connection and action panels.
@@ -188,7 +224,7 @@
   - Clear stale sync error messages after a later automatic sync succeeds.
   - Submit Account & Data email, verification-code, and sync-passphrase fields with Enter.
 
-- 2026-09-17:
+- **2026-09-17**:
   - Show complete IP addresses and concise first-label hostnames in the connection tree.
   - Render connection-tree hosts as smaller secondary text.
   - Keep Fleet Runbook result panels collapsed until explicitly opened.
@@ -284,7 +320,7 @@
   - Replace automatic reconnect with consistent Wait for key and Close immediately disconnect choices.
   - Optionally retain terminal scrollback when reconnecting through Terminal settings.
 
-- 2026-09-04:
+- **2026-09-04**:
   - Paint the complete terminal surface with the selected terminal theme before the first input arrives.
   - Add `{host_rslv}` for actions that need the selected host as a resolved IP address.
   - Show pinned actions as a flat, left-aligned `folder/name` list in the expanded connection tree.
@@ -298,10 +334,12 @@
   - Run SSH pre-connect actions with Electron-compatible variables, secret placeholders, platform filtering, and stop-on-failure behavior.
   - Run mixed local and remote SSH post-connect actions in saved order, preserving text, hidden, and password command modes while waiting between commands.
   - Give repeated and split persistent SSH connections independent screen or tmux session names.
-- 2026-09-02:
+
+- **2026-09-02**:
   - Added JVM SSH terminal connections using OpenSSH with saved password, private-key, key-passphrase and agent authentication; global and per-connection overrides; compression, X11 and agent forwarding; PTY, verbosity, timeout, arbitrary options, proxy jump, host failover probing, unique SOCKS proxy and screen/tmux persistence.
   - Added SSH before/after startup actions, automatic credential prompt responses, same-connection reconnect and split behavior, double-click connection launch, and visible launch errors.
-- 2026-09-01:
+
+- **2026-09-01**:
   - Applied terminal font, text size, colour theme, cursor, scrollback, scroll-on-keystroke, scrollbar, and bell preferences to JVM terminal sessions.
   - Refined JVM fields, tree rows, icons, menus, sidebar actions, internal padding, typography, and toggles for desktop-appropriate density.
   - Moved compact field labels outside their input outlines so labels never cover entered values.
@@ -310,4 +348,6 @@
   - Added Escape-to-close for JVM Settings and restored normal window stacking.
   - Fixed local terminals failing to render when unlimited scrollback is selected.
   - Kept Settings above active terminal surfaces in its own desktop window.
-- 2026-08-31: Added the native JVM desktop application with Electron-compatible persistence, cache and window geometry; theme-aware neutral surfaces and native dialogs; compact global settings with complete Secrets, foldered Action Library, Runbooks, Tunnels, AI, account, backup, sync, and CSV editors; per-command text, hidden, and password modes; a loose-connections-first collapsible folder tree with saved cluster presets; bundled themes and icons; and persistent JediTerm and Pty4J terminal tabs with a single application context menu, reliable disconnect strategies, terminal and tab menus, nested splits, unsplit, popout, and reattach.
+
+- **2026-08-31**:
+  - Added the native JVM desktop application with Electron-compatible persistence, cache and window geometry; theme-aware neutral surfaces and native dialogs; compact global settings with complete Secrets, foldered Action Library, Runbooks, Tunnels, AI, account, backup, sync, and CSV editors; per-command text, hidden, and password modes; a loose-connections-first collapsible folder tree with saved cluster presets; bundled themes and icons; and persistent JediTerm and Pty4J terminal tabs with a single application context menu, reliable disconnect strategies, terminal and tab menus, nested splits, unsplit, popout, and reattach.
