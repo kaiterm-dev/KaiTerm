@@ -65,11 +65,41 @@ Scripts can also write one JSON line per request to the socket, such as `{"comma
 | `terminal-search` | `text` | Searches the active terminal's output. |
 | `close-tab` | `tab` (optional) | Closes a terminal tab, the active one by default, without asking for confirmation. |
 
+## MCP server
+
+KaiTerm can act as a Model Context Protocol server, so AI apps such as Claude Code and Codex can list your connections, open them, and run commands in KaiTerm's terminals. KaiTerm hosts the server itself over MCP Streamable HTTP: the AI app connects to the KaiTerm that is already running and never starts it.
+
+![MCP server settings](https://kaiterm.dev/resources/screenshots/jvm-34-settings-mcp.png)
+
+To enable it, open Settings > MCP Server and turn on Enable MCP server. It is off by default, starts and stops immediately, and listens on `127.0.0.1` only, on port 47600 unless you change the port in the same panel. If the port is busy, the panel shows the error and the switch stays off. The settings and the access token are stored in `cache.json`, so they are local to the device.
+
+In the same panel, the Add buttons for Claude Code and Codex run the setup on this machine through your login shell (so the `claude` and `codex` commands are found) and show the commands and their output, with the token hidden. Add can be pressed again to repair a changed token or port; Claude Code gets the server for your user, so it works from any directory. The equivalent manual commands, with the current port and token:
+
+```sh
+claude mcp remove kaiterm; claude mcp add --scope user --transport http kaiterm http://127.0.0.1:47600/mcp --header "Authorization: Bearer <token>"
+
+codex mcp remove kaiterm; codex mcp add kaiterm --url http://127.0.0.1:47600/mcp && echo 'http_headers = { Authorization = "Bearer <token>" }' >> "${CODEX_HOME:-$HOME/.codex}/config.toml"
+```
+
+Other clients take the equivalent JSON: `{"mcpServers": {"kaiterm": {"url": "http://127.0.0.1:47600/mcp", "headers": {"Authorization": "Bearer <token>"}}}}`. Regenerate token in the panel replaces the token; the old one stops working immediately.
+
+| Tool | Arguments | Effect |
+| --- | --- | --- |
+| `list_connections` | | Lists saved connections (uuid, name, folder, type, host) and clusters. |
+| `list_sessions` | | Lists open terminal sessions with session id, tab title, connection name, and connected state. |
+| `open_connection` | `connection` (uuid or exact name), `timeout_seconds` (default 30) | Opens a connection in a new tab, waits until it connects, and returns the session id. |
+| `run_command` | `session`, `command`, `timeout_seconds` (default 60) | Runs a command in the terminal and returns whether it succeeded and its output. On timeout it sends Ctrl-C and returns the partial output. |
+| `send_input` | `session`, `text`, `press_enter` (default false) | Types raw text, for interactive programs, prompts, and control characters. |
+| `read_output` | `session`, `lines` (default 200, maximum 2000) | Returns the screen and scrollback tail as plain text. |
+| `close_session` | `session` | Closes a session and its tab without asking for confirmation. |
+
+Security: the server only listens on the loopback interface, never on the network, and rejects every request without the bearer token, with a `Host` other than `127.0.0.1` or `localhost` on its port, or with a non-loopback `Origin`, which blocks other websites and DNS rebinding. Request bodies are limited to 1 MB. The tools can run commands on every connection you have saved, so enable it only for AI apps you trust, keep the token private, and keep your AI app's tool approval prompts on. Commands run in the visible terminal, so you can watch what the AI app does.
+
 ## Security and privacy
 
 - SSH, SFTP, FTP (FTPS), and MySQL over SSH check the server's host key or certificate. The host key checking setting is `ask`, `accept-new`, `strict`, or `off`, and trusted fingerprints are kept in `known_hosts.json`.
 - Secrets and the sync session are encrypted with a key stored in the local settings. Pro sync is encrypted on your device before upload.
-- The automation socket can only be used by the owner of the config directory.
+- The MCP server is off by default, listens on loopback only, and requires a bearer token. The automation socket, started only by `--automation`, can only be used by the owner of the config directory.
 
 ## Features
 
@@ -118,7 +148,7 @@ The same plan limits apply to the Android and iOS apps. When restoring a Pro bac
 
 ![Connection profile editor](https://kaiterm.dev/resources/screenshots/jvm-04-connection-new.png)
 
-All 33 views are in the [kaiterm.dev gallery](https://kaiterm.dev/#screenshots).
+All 34 views are in the [kaiterm.dev gallery](https://kaiterm.dev/#screenshots).
 
 ## License
 

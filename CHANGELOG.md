@@ -1,5 +1,54 @@
 # Changelog
 
+## v4.1.0
+
+- **2026-10-12**:
+  - Paste the selected text with a middle click on macOS, within KaiTerm only and without changing the clipboard, like Terminal.app.
+  - Add an MCP Server setting that lets AI apps such as Claude Code and Codex connect to the running KaiTerm over local HTTP; it is off by default and starts or stops immediately.
+  - Protect the MCP server with an access token that you can regenerate in Settings > MCP Server, and listen on this computer only.
+  - Choose the MCP server port in Settings > MCP Server, and show why the server could not start, for example when the port is busy.
+  - Add KaiTerm to Claude Code or Codex with one Add button in Settings > MCP Server.
+  - Show the commands that the Add button ran and their result, without revealing the access token.
+  - Show a ready-to-copy JSON snippet for other MCP clients in Settings > MCP Server.
+  - Let AI apps list your connections and open terminal sessions through MCP.
+  - Let AI apps run commands in a session and read the result, with a timeout that interrupts commands that do not finish.
+  - Let AI apps send keystrokes to a session and read its screen and scrollback as text.
+  - Let AI apps close terminal sessions through MCP.
+
+- **2026-10-10**:
+  - Show the Run card when an AI model writes its proposed command as JSON text instead of a tool call, as some Cloudflare Workers AI models do.
+  - Sort AI configurations by name in Settings and in the Open with AI menu.
+  - Add new AI configurations at the top of the list.
+  - Add Cloudflare Workers AI as an AI provider; it needs your Cloudflare account ID alongside the API token.
+  - Fix an "index: 0, size: 0" error when running a command proposed by the AI assistant.
+  - Run AI-proposed commands in SSH terminals that use the built-in libssh2 connection; Run did nothing there before.
+  - Keep what you type into a libssh2 SSH terminal while it is still connecting, and send it once the connection opens.
+  - Show only the proposed command in the terminal when running an AI command, instead of the long wrapper KaiTerm types around it.
+  - Start the AI assistant's environment check after the connection's post-connection commands finish, so it sees the user and environment they set up.
+  - Show the AI assistant panel as soon as a connection opens with AI, with what it is waiting for until it is ready to chat.
+
+- **2026-10-09**:
+  - Show the dragged tab lifted with a shadow under the pointer while the other tabs slide aside to make room.
+  - Add NVIDIA (Nemotron and other NVIDIA-hosted models) and Groq as AI providers.
+  - Copy the whole highlighted words or lines after a double- or triple-click drag on Linux, so a middle-click paste no longer stops where the pointer was.
+  - Fix the Windows app hanging on the startup splash with high CPU use.
+  - Show an error and quit instead of spinning forever when startup fails.
+  - Add a Start menu entry and a desktop shortcut from the Windows installer.
+  - Fix saving the local settings PIN on Windows.
+  - Fill the Settings window edge to edge instead of drawing a rounded panel inside the frame.
+  - Match the hover and click highlight of sidebar buttons to their square shape instead of a circle.
+  - Show a setup wizard in the Windows installer to choose the install folder, instead of installing silently.
+  - Use the KaiTerm icon for the Windows app and installer.
+  - Include the Java modules the packaged app needs, such as SQL support for database terminals.
+  - Fire every shortcut wherever focus is, including Shift+Left and Shift+Right to switch tabs from a terminal; change or clear a shortcut in Settings to give its keys back to the terminal or text field.
+  - Show shortcuts in Settings with the platform's key names, such as Ctrl+Shift+C or Cmd+Shift+C, instead of Primary.
+  - Change a shortcut in Settings by clicking it and pressing the new keys; Backspace clears it.
+  - Warn in Settings when two actions share a shortcut.
+  - Reset a shortcut to its default from Settings.
+  - Allow F1 to F12, Page Up, Page Down, Home, End and punctuation keys in shortcuts.
+  - Show shortcuts that were never changed in Settings when only some were customised, instead of "Not set".
+  - Follow customised Copy, Paste and New Local Terminal shortcuts in the macOS menu bar.
+
 ## v4.0.0
 
 - **2026-10-08**:
