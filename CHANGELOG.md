@@ -1,8 +1,14 @@
 # Changelog
 
+## v4.1.1
+
+- **2026-10-15**:
+  - Make Unique SOCKS proxy serve connections in built-in libssh2 SSH terminals.
+
 ## v4.1.0
 
 - **2026-10-12**:
+  - Rename a tab from its right-click menu with Rename tab; a chosen name replaces a cluster name and is kept when the tab leaves the cluster.
   - Paste the selected text with a middle click on macOS, within KaiTerm only and without changing the clipboard, like Terminal.app.
   - Add an MCP Server setting that lets AI apps such as Claude Code and Codex connect to the running KaiTerm over local HTTP; it is off by default and starts or stops immediately.
   - Protect the MCP server with an access token that you can regenerate in Settings > MCP Server, and listen on this computer only.
@@ -12,6 +18,8 @@
   - Show a ready-to-copy JSON snippet for other MCP clients in Settings > MCP Server.
   - Let AI apps list your connections and open terminal sessions through MCP.
   - Let AI apps run commands in a session and read the result, with a timeout that interrupts commands that do not finish.
+  - Rename a tab to the cluster name when creating a cluster from the whole tab, and restore its name when the cluster is broken or the tab leaves it.
+  - Ask for a name when opening several connections in a split tab, for Open all and Open as cluster.
   - Let AI apps send keystrokes to a session and read its screen and scrollback as text.
   - Let AI apps close terminal sessions through MCP.
 
