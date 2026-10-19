@@ -1,5 +1,18 @@
 # Changelog
 
+## v4.1.2
+
+- **2026-10-19**:
+  - Resize the sidebar and split terminals with Compose split panes and standard resize cursors.
+  - Show visible dividers and wider resize grips between split terminals.
+  - Use Compose tabs for terminal tabs.
+  - Keep visible terminal tabs in place when switching between them.
+  - Use Material 3 text fields and menus in settings and other desktop forms.
+  - Use Material 3 controls throughout the desktop app, including buttons, selections, navigation, dialogs, tabs, and progress indicators.
+  - Keep Material 3 fields and buttons at KaiTerm's compact desktop size.
+  - Keep Material 3 switches and checkboxes compact in settings rows.
+  - Use Material 3 sliders in the colour picker and dismiss picker dialogs with Escape.
+
 ## v4.1.1
 
 - **2026-10-15**:
