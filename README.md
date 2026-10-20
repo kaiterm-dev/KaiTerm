@@ -2,7 +2,7 @@
 
 KaiTerm is a desktop connection manager for local shells, SSH, SFTP, FTP, and MySQL/MariaDB. The JVM app uses Compose Desktop for its interface, JediTerm for terminal rendering, Pty4j for local shells, and a built-in libssh2 SSH client. It runs on Linux, macOS, and Windows.
 
-SSH and SFTP use libssh2 by default. Start KaiTerm with `--no-libssh2` to use the system OpenSSH, `sftp`, and `ftp` programs instead; the Programs settings then appear. SFTP and FTP open in a terminal tab with an sftp-style command line (`ls`, `cd`, `get`, `put`, `mkdir`, `rm`, `rename`, `chmod`). FTP uses TLS when the server offers it.
+SSH and SFTP use KaiTerm's built-in libssh2 client. SFTP and FTP open in a terminal tab with an sftp-style command line (`ls`, `cd`, `get`, `put`, `mkdir`, `rm`, `rename`, `chmod`). FTP uses TLS when the server offers it.
 
 ## Install
 

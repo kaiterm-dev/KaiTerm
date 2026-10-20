@@ -1,5 +1,25 @@
 # Changelog
 
+## v5.0.0
+
+- **2026-10-20**:
+  - Use KaiTerm's built-in SSH client for connections, file transfers, runbooks, and SSH tunnels.
+  - Verify SSH host keys consistently for terminal connections, runbooks, and tunnels.
+  - Remove unsupported SSH and SFTP options from connection and bulk-edit settings.
+  - Keep remote SSH tunnels working with the built-in SSH client.
+  - Split every open desktop tab into one tab, or separate every split terminal into its own tab.
+  - Cancel transient desktop naming popups with Escape.
+  - Make all connection, automation, tunnel, Runbook, host failover, and AI features available without a paid tier.
+  - Remove paid-account messaging and plan checks from desktop account and sync flows.
+
+- **2026-10-19**:
+  - Open searchable dropdown lists below their input fields.
+  - Open non-searchable dropdowns only when clicking their field, not their label.
+  - Filter SSH actions, SQL actions, runbooks, and tunnels by their names, folders, hosts, and commands.
+  - Filter tunnel and runbook runner lists before starting or stopping an item.
+  - Clear every desktop search field with its clear button or Escape without closing its dialog.
+  - Open Settings, Tunnel Manager, and Fleet Runbooks as fixed, closable workspace tabs instead of popups.
+
 ## v4.1.2
 
 - **2026-10-19**:
