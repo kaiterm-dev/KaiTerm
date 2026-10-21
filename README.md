@@ -2,7 +2,7 @@
 
 KaiTerm is a desktop connection manager for local shells, SSH, SFTP, FTP, and MySQL/MariaDB. The JVM app uses Compose Desktop for its interface, JediTerm for terminal rendering, Pty4j for local shells, and a built-in libssh2 SSH client. It runs on Linux, macOS, and Windows.
 
-SSH and SFTP use KaiTerm's built-in libssh2 client. SFTP and FTP open in a terminal tab with an sftp-style command line (`ls`, `cd`, `get`, `put`, `mkdir`, `rm`, `rename`, `chmod`). FTP uses TLS when the server offers it.
+SSH and SFTP use KaiTerm's built-in libssh2 client. There is no external SSH fallback or `--no-libssh2` launch option. SFTP and FTP open in a terminal tab with an sftp-style command line (`ls`, `cd`, `get`, `put`, `mkdir`, `rm`, `rename`, `chmod`). FTP uses TLS when the server offers it.
 
 ## Install
 
@@ -55,7 +55,7 @@ Scripts can also write one JSON line per request to the socket, such as `{"comma
 
 | Command | Arguments | Effect |
 | --- | --- | --- |
-| `state` | | Returns connections, clusters, selection, open dialogs, terminal tabs, sidebar state, and Pro status. |
+| `state` | | Returns connections, clusters, selection, open dialogs, terminal tabs, and sidebar state. |
 | `locate` | `element` (optional) | Returns window-relative bounds for `connection:<uuid>`, `folder:<path>`, `cluster:<uuid>`, or `terminal`, or every visible element. |
 | `select` | `connections` | Selects connections in the tree by uuid. |
 | `sidebar` | `visible` | Shows or hides the connection sidebar. |
@@ -98,7 +98,7 @@ Security: the server only listens on the loopback interface, never on the networ
 ## Security and privacy
 
 - SSH, SFTP, FTP (FTPS), and MySQL over SSH check the server's host key or certificate. The host key checking setting is `ask`, `accept-new`, `strict`, or `off`, and trusted fingerprints are kept in `known_hosts.json`.
-- Secrets and the sync session are encrypted with a key stored in the local settings. Pro sync is encrypted on your device before upload.
+- Secrets and the sync session are encrypted with a key stored in the local settings. Cloud sync is encrypted on your device before upload.
 - The MCP server is off by default, listens on loopback only, and requires a bearer token. The automation socket, started only by `--automation`, can only be used by the owner of the config directory.
 
 ## Features
@@ -118,25 +118,9 @@ Security: the server only listens on the loopback interface, never on the networ
 - Create managed local, remote, and dynamic SSH tunnels and monitor their status. Start eligible tunnels automatically.
 - Stagger cluster connections, Runbook hosts, and action commands using the connection and command stagger setting.
 
-### Pro
+### Included features
 
-Pro adds before-connect and after-connect automation, port probing, comma-separated host failover, and unique SOCKS proxy ports. Open a saved SSH connection with an OpenAI, Grok, Gemini, or Ollama configuration for connection-scoped AI assistance. Proposed commands require review and approval before execution.
-
-Pro also provides client-side encrypted settings sync. Account & Data shows the signed-in account and plan status, and offers sync controls when the current account has Pro. Local backup, restore, and CSV import are available without Pro.
-
-### Standard and Pro limits
-
-| Capability | Standard | Pro |
-| --- | --- | --- |
-| Local and remote terminals, folders, clusters, Actions, and local backup | Included | Included |
-| Hosts per saved connection | One | Multiple with failover |
-| Saved managed SSH tunnels | Up to two | Unlimited |
-| Saved Fleet Runbooks | Up to two | Unlimited |
-| Proxy jumps | Included | Included |
-| Unique SOCKS ports, port probing, and startup automation | Requires Pro | Included |
-| AI assistance and encrypted cloud sync | Requires Pro | Included |
-
-The same plan limits apply to the Android and iOS apps. When restoring a Pro backup on Standard, KaiTerm retains the first host of each connection. CSV imports that exceed Standard limits are rejected.
+All accounts can use before-connect and after-connect automation, port probing, comma-separated host failover, unique SOCKS proxy ports, connection-scoped AI assistance, and client-side encrypted cloud sync. Account & Data offers sync controls after sign-in; local backup, restore, and CSV import are also available to every user.
 
 ## Screenshots
 

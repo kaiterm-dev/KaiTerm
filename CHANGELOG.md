@@ -1,5 +1,12 @@
 # Changelog
 
+## v5.0.1
+
+- **2026-10-20**:
+  - Align fixed Settings, Tunnel Manager, and Runbooks tabs with the workspace when the connection sidebar is on the left.
+  - Use correct singular and plural wording in counts and messages.
+  - Use KaiTerm's built-in SSH client without an external SSH fallback.
+
 ## v5.0.0
 
 - **2026-10-20**:
