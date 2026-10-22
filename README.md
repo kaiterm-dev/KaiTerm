@@ -109,7 +109,7 @@ Security: the server only listens on the loopback interface, never on the networ
 - Open local shells and remote sessions in the same workspace. Reorder tabs, split a terminal, swap split panels, change split direction, and pop out or reattach a complete tab.
 - Keep SSH tabs individually resumable with tmux or screen. Use proxy jumps, reusable secrets, custom command paths, and connection-specific settings.
 - Connect to MySQL/MariaDB directly or through SSH. Configure TLS and run multi-statement queries in the database terminal.
-- Search terminal output, copy and paste through the system clipboard, and adjust themes, fonts, cursor, scrollback, shortcuts, and tree colors.
+- Search terminal output, copy and paste through the system clipboard, and adjust themes, fonts, cursor, scrollback, desktop keyboard shortcuts, and tree colors. Mobile retains synced shortcut bindings without exposing shortcut editing.
 
 ### Actions and automation
 

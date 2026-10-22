@@ -1,10 +1,36 @@
 # Changelog
 
+## v5.0.2
+
+- **2026-10-22**:
+  - Open searchable desktop choices in a focused picker with a search field and scrollable results, instead of a dropdown that can cover its source field.
+  - Restore clicks on fixed-choice desktop fields.
+  - Close fixed-choice desktop dropdowns when their field is clicked again.
+  - Use compact rows for fixed-choice desktop dropdown options.
+  - Let fixed-choice desktop menus choose their own on-screen position.
+  - Focus and select the searchable picker query when it opens, so typing starts filtering immediately.
+  - Make the desktop color picker compact and cancel it when it loses focus.
+  - Show terminal tab and cluster naming prompts inside the desktop app.
+  - Show desktop confirmations and small naming prompts inside the app.
+  - Keep spacing compact and consistent across desktop popups.
+
+- **2026-10-21**:
+  - Show only the first host in the connection list when a connection has several comma-separated hosts, as an IP address in full or a name without its domain.
+  - Show the full labels and correctly sized actions in desktop cluster, tab, and folder naming dialogs.
+  - Keep removed desktop settings list items removed until the user saves or cancels the editor.
+  - Keep the desktop responsive while a local action runs in the background.
+
 ## v5.0.1
 
 - **2026-10-20**:
   - Align fixed Settings, Tunnel Manager, and Runbooks tabs with the workspace when the connection sidebar is on the left.
   - Use correct singular and plural wording in counts and messages.
+  - Show every confirmation and prompt in the same bordered window, centered over the app window, so none are hidden behind the terminal or hard to see.
+  - Keep the port typed for a new connection when switching between the connection editor pages, instead of resetting it to the default.
+  - Stop text fields from sometimes reverting to the previous text while typing, such as a connection name.
+  - Relay a middle-click paste in a cluster to every terminal, even when the clicked terminal did not have keyboard focus.
+  - Make "Open as SFTP" open an SFTP file transfer again instead of a second SSH terminal.
+  - Complete commands and remote or local file names with Tab in SFTP and FTP tabs, listing the choices when there are several.
   - Use KaiTerm's built-in SSH client without an external SSH fallback.
 
 ## v5.0.0
