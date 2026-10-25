@@ -28,6 +28,8 @@ All features are available to every account. Account & Data provides encrypted c
 - Open local shells, remote SSH sessions, database sessions, SFTP, and FTP transfers from one workspace.
 - Use host-key and certificate verification, proxy jumps, host failover, reusable secrets, and connection-specific settings.
 - Run saved Actions and Fleet Runbooks, manage SSH tunnels, and use connection-scoped AI assistance.
+- Connect desktop AI tools through the optional MCP server to work with sessions, clusters, and remote files, with a read-only mode available.
+- Hide commands typed by KaiTerm for Actions, AI, and desktop MCP from bash and zsh history by default. The first command in a zsh session may still be recorded.
 - Encrypt cloud-synced settings on your device before they are uploaded. All features are available to every account.
 
 ## Screenshots

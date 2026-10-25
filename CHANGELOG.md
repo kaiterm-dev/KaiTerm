@@ -1,5 +1,50 @@
 # Changelog
 
+## v5.0.3
+
+- **2026-10-25**:
+  - Avoid cloud sync conflicts caused by settings defaults added after the last sync.
+  - Show original action, AI, and MCP commands instead of their history and status wrappers.
+  - Keep settings editor action buttons visible when their contents exceed the window height.
+  - Pad the connection search icon and close the search with Escape.
+  - Pack desktop picker and editor dialogs to their contents, with scrolling for longer lists and output.
+  - Size desktop popups to fit their contents, including cloud sync conflict recovery buttons.
+  - Keep commands KaiTerm types for you (actions, AI assistant, MCP) out of the shell history on bash and zsh; the first one of a session may stay recorded on zsh.
+  - Add a "Hide KaiTerm commands from shell history" terminal setting, on by default.
+  - Replace the per-AI "Suppress commands from Bash history" setting with it.
+
+- **2026-10-24**:
+  - Let MCP clients run a command in the background and check on it later, so long commands are no longer stopped at the timeout.
+  - Let MCP clients run one command on every host of a cluster and get each host's result.
+  - Let MCP clients wait for output to match a pattern, search the whole scrollback, and interrupt a session.
+  - Let MCP clients read a session's working directory, user, host, OS, and shell, and whether it is busy.
+  - Let MCP clients rename a session's tab.
+  - Give MCP clients a connection's approved AI memories when they open it, or on request.
+  - Report how long each MCP command took, and its exit code.
+  - Let MCP clients list, read, write, upload, and download remote files over SFTP without opening a tab.
+  - Let MCP clients read only the output that is new since their last read.
+  - Let MCP clients save a connection memory, marked as saved through MCP.
+  - Let MCP clients read a connection's non-secret settings, jump host, post-connection actions, clusters, tunnels, and open sessions.
+  - Tell MCP clients whether a session's post-connection actions finished or failed.
+  - Block MCP tools that change anything with a Read-only switch in the MCP Server settings.
+
+- **2026-10-23**:
+  - Run an action chosen from a clustered terminal's context menu in every terminal in that cluster.
+  - Keep desktop prompts and confirmations visible above terminal content.
+  - Remove a runtime cluster when its final terminal leaves or closes.
+  - Drag all selected connections together between desktop sidebar folders without the initiating click collapsing the selection.
+  - Drop desktop sidebar folders and connections onto the intended folder header, including a parent of a nested folder.
+  - Fade desktop sidebar folder drop feedback instead of switching its colour abruptly.
+  - Open desktop prompts, editors, confirmations, and pickers in the centre of their parent window.
+  - Keep the desktop title bar colour unchanged when opening, closing, or hovering terminal tabs.
+  - Choose KaiTerm or system window decorations on every desktop platform from Appearance settings, applying the choice after restart.
+  - Keep the desktop tab strip visible and aligned with the sidebar collapse control when using system window decorations.
+  - Keep unused tab-strip space non-draggable when using system window decorations.
+  - Pad the tab strip from the window frame when using system window decorations.
+  - Restore a blinking block cursor when a saved desktop cursor setting is missing or invalid.
+  - Restore the cursor when reconnecting a retained desktop terminal session.
+  - Pack desktop prompts, including backup-password entry, to their content instead of leaving fixed empty space.
+
 ## v5.0.2
 
 - **2026-10-22**:
