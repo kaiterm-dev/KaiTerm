@@ -1,5 +1,10 @@
 # Changelog
 
+## v5.0.4
+
+- **2026-10-25**:
+  - Fix connection, cluster, secret, and bulk editors failing to open or clipping their contents.
+
 ## v5.0.3
 
 - **2026-10-25**:
