@@ -1,5 +1,53 @@
 # Changelog
 
+## Unreleased
+
+- Tell MCP clients to explain commands clearly and wait for the user's acknowledgement before sending them to a terminal.
+- Let MCP clients open a saved connection beside the current terminal in a horizontal or vertical split.
+
+## v5.0.5
+
+- **2026-11-03**:
+  - Use the user's default shell for new local terminals, without automatically adding login-shell arguments.
+
+- **2026-11-03**:
+  - Allow local shell programs to include simple environment assignments, such as `HISTCONTROL=ignoreboth bash`.
+  - Keep open desktop terminal sessions running when changing the local shell program.
+
+- **2026-11-03**:
+  - Add Upload file and Download file actions to SSH terminal context menus, starting in KaiTerm's local working folder.
+
+- **2026-11-03**:
+  - Add MCP connection searching by name, host, folder, type, or UUID.
+
+- **2026-11-03**:
+  - Add an MCP file-transfer tool that uses an open SSH terminal's current privilege context instead of opening another SSH connection.
+
+- **2026-10-31**:
+  - Honor hidden per-connection action overrides in terminal context menus.
+
+- **2026-10-30**:
+  - Keep connection folder rename and move updates consistent across connections, clusters, and Runbooks.
+
+- **2026-10-29**:
+  - Repeat a held letter key on macOS instead of opening the accent popup (applies from the next launch).
+  - Show output from desktop post-connection actions while keeping their command wrapper and status marker hidden.
+  - Open a same-connection split terminal in the source terminal's current folder when its shell is ready.
+  - Open splits and duplicate tabs of local Bash and Zsh terminals in the source terminal's current folder.
+  - Reload connection, authentication, and action settings when duplicating or splitting a connection terminal.
+  - Duplicate a ready same-connection terminal into a new tab in the source terminal's current folder.
+  - Keep generated directory changes hidden when opening same-connection splits and duplicate tabs.
+  - Track ready Bash and Zsh SSH terminals' folders without probing the active shell, including while full-screen programs are open.
+  - Open splits and duplicate tabs immediately when a shell does not report its current folder.
+  - Remove unreliable Escape dismissal from desktop Settings, connection, and cluster editors.
+  - Hide local actions that do not support the current platform from desktop action menus.
+  - Refresh open terminal and sidebar action menus when Settings saves action changes.
+  - Use Phosphor icons throughout the desktop interface, matching action icons.
+  - Show the default terminal icon for actions saved with legacy or invalid icon names.
+  - Show a single prompt after connection actions that answer a password prompt or open a nested shell.
+  - Close a desktop terminal with a visible error instead of silently discarding input when its SSH channel fails or its input buffer fills.
+  - Keep desktop SSH, file-transfer, and database terminal buffers bounded when output or input stops draining.
+
 ## v5.0.4
 
 - **2026-10-25**:
