@@ -1,9 +1,16 @@
 # Changelog
 
-## Unreleased
+## v5.0.6
 
-- Tell MCP clients to explain commands clearly and wait for the user's acknowledgement before sending them to a terminal.
-- Let MCP clients open a saved connection beside the current terminal in a horizontal or vertical split.
+- **2026-11-09**:
+  - Show upload and download progress in SSH terminals without exposing encoded transfer data.
+  - Let Cmd+F search a popped-out terminal instead of opening connection search in the main window.
+
+- **2026-11-06**:
+  - Limit clusters and split tabs to 40 connections, with a clear message before opening any connections.
+  - Open a Ctrl+D duplicate terminal tab immediately to the right of its source tab.
+  - Tell MCP clients to explain commands clearly and wait for the user's acknowledgement before sending them to a terminal.
+  - Let MCP clients open a saved connection beside the current terminal in a horizontal or vertical split.
 
 ## v5.0.5
 
