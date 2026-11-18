@@ -1,5 +1,23 @@
 # Changelog
 
+## v5.1.0
+
+- **2026-11-18**:
+  - Keep the newest terminal output visible after an SSH connection closes instead of leaving the terminal at the top of its scrollback when switching tabs, and avoid resizing detached terminal surfaces.
+  - Compare the same small text file or the visible terminal buffer across two to four terminals in a split view, with numbered protected workspace tabs and coloured changed spans.
+
+- **2026-11-17**:
+  - Refuse base64 file uploads through an open SSH terminal when the remote destination already exists, preserving the existing file.
+
+- **2026-11-13**:
+  - Keep terminal and quit confirmation prompts above terminal panes so KaiTerm can still be closed when a terminal surface is mis-layered.
+
+- **2026-11-13**:
+  - Preserve terminal output colours for URLs, including coloured Git diff lines.
+
+- **2026-11-12**:
+  - Browse remote folders when choosing an SSH download, and view or interrupt active SSH uploads and downloads.
+
 ## v5.0.6
 
 - **2026-11-09**:
